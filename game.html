@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>随机身份 · 穿越 Demo</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --panel: #1a1d28;
+      --panel2: #232735;
+      --text: #e8eaef;
+      --muted: #9aa3b5;
+      --accent: #7c9cff;
+      --accent2: #ff8fab;
+      --good: #6ee7b7;
+      --warn: #fcd34d;
+      --bad: #fb7185;
+      --line: #2f3545;
+      --guide: #a78bfa;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+      background: radial-gradient(ellipse at top, #1a2035 0%, var(--bg) 55%);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.65;
+    }
+
+    .wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    header h1 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    header p {
+      color: var(--muted);
+      font-size: 0.88rem;
+      margin-top: 6px;
+    }
+
+    .hud {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .stat-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px 12px;
+    }
+
+    .stat-card.full { grid-column: 1 / -1; }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .bar-track {
+      height: 8px;
+      background: var(--panel2);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 99px;
+      transition: width 0.35s ease;
+    }
+
+    .bar-fill.ability { background: linear-gradient(90deg, #3b82f6, #7c9cff); }
+    .bar-fill.rep-pos { background: var(--good); }
+    .bar-fill.rep-neg { background: var(--bad); }
+    .bar-fill.stress { background: linear-gradient(90deg, #fbbf24, #ef4444); }
+    .bar-fill.progress { background: linear-gradient(90deg, #8b5cf6, #ec4899); }
+
+    .guide-meter {
+      position: relative;
+      height: 14px;
+      background: var(--panel2);
+      border-radius: 99px;
+      margin-top: 4px;
+    }
+
+    .guide-meter .center {
+      position: absolute;
+      left: 50%;
+      top: 2px;
+      bottom: 2px;
+      width: 2px;
+      background: var(--muted);
+      transform: translateX(-50%);
+      opacity: 0.5;
+    }
+
+    .guide-dot {
+      position: absolute;
+      top: 50%;
+      width: 14px;
+      height: 14px;
+      background: var(--guide);
+      border: 2px solid #fff;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: left 0.4s ease;
+      box-shadow: 0 0 12px rgba(167, 139, 250, 0.5);
+    }
+
+    .guide-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .main-panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 20px;
+      min-height: 320px;
+    }
+
+    .tag-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .tag {
+      font-size: 0.72rem;
+      padding: 3px 10px;
+      border-radius: 99px;
+      background: var(--panel2);
+      color: var(--muted);
+      border: 1px solid var(--line);
+    }
+
+    .tag.female { color: var(--accent2); border-color: #5c3d4a; }
+    .tag.male { color: var(--accent); border-color: #3d4a6a; }
+    .tag.rest { color: var(--good); }
+
+    .guide-box {
+      display: flex;
+      gap: 12px;
+      background: var(--panel2);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 16px;
+      border-left: 3px solid var(--guide);
+    }
+
+    .guide-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #6d28d9, #a78bfa);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .guide-name {
+      font-size: 0.78rem;
+      color: var(--guide);
+      font-weight: 600;
+    }
+
+    .guide-text {
+      font-size: 0.92rem;
+      margin-top: 2px;
+    }
+
+    .story-text {
+      font-size: 0.95rem;
+      margin-bottom: 16px;
+      white-space: pre-wrap;
+    }
+
+    .story-text .system { color: var(--accent); }
+    .story-text .muted { color: var(--muted); }
+    .story-text .highlight { color: var(--warn); }
+
+    .choices {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      border-radius: 10px;
+      padding: 11px 14px;
+      font-size: 0.9rem;
+      transition: transform 0.12s, background 0.15s;
+    }
+
+    button:active { transform: scale(0.98); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: #fff;
+    }
+
+    .btn-primary:hover { filter: brightness(1.08); }
+
+    .btn-secondary {
+      background: var(--panel2);
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    .btn-secondary:hover { border-color: var(--accent); }
+
+    .btn-secondary.recommended {
+      border-color: var(--guide);
+      box-shadow: inset 0 0 0 1px rgba(167, 139, 250, 0.25);
+    }
+
+    .btn-secondary.recommended::after {
+      content: " · 规规推荐";
+      font-size: 0.75rem;
+      color: var(--guide);
+    }
+
+    .btn-danger {
+      background: #3f1d2a;
+      color: var(--accent2);
+      border: 1px solid #5c3d4a;
+    }
+
+    .action-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .action-btn {
+      text-align: left;
+      padding: 10px 12px;
+    }
+
+    .action-btn small {
+      display: block;
+      color: var(--muted);
+      font-size: 0.75rem;
+      margin-top: 4px;
+    }
+
+    .action-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .ap-badge {
+      display: inline-block;
+      background: var(--panel2);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-size: 0.82rem;
+      margin-bottom: 12px;
+    }
+
+    .log-box {
+      margin-top: 16px;
+      background: var(--panel2);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      max-height: 120px;
+      overflow-y: auto;
+    }
+
+    .log-box div { margin-bottom: 4px; }
+
+    .rebel-input {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .rebel-input input {
+      flex: 1;
+      background: var(--panel2);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px 12px;
+      color: var(--text);
+      font-family: inherit;
+    }
+
+    .rebel-input input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>随机身份 · 穿越 Demo</h1>
+      <p>双线穿插 · 行动值 · 规规 · 压力 ≥ 70% 强制休息</p>
+    </header>
+
+    <div class="hud" id="hud"></div>
+
+    <div class="main-panel">
+      <div class="tag-row" id="tags"></div>
+      <div class="guide-box" id="guideBox" hidden>
+        <div class="guide-avatar">✦</div>
+        <div>
+          <div class="guide-name">规规 · 向导</div>
+          <div class="guide-text" id="guideText"></div>
+        </div>
+      </div>
+      <div class="story-text" id="story"></div>
+      <div id="actions"></div>
+      <div class="log-box" id="log"></div>
+    </div>
+
+    <footer>完整版目标：事业进度 100 · 完成 2 个世界日对照 · 看清规则</footer>
+  </div>
+
+  <script>
+    const REBEL_WORDS = new Set([
+      "拒绝", "不做", "凭什么", "为什么", "不", "拒绝任务",
+      "可以不做吗", "不必", "不想", "谁规定的", "闭嘴", "不要你管"
+    ]);
+
+    const GOAL_PROGRESS = 100;
+    const MAX_DAYS = 2;
+    const NIGHT_AP = 4;
+    const STRESS_REST = 70;
+
+    const ACTIONS = {
+      core: { name: "改稿 / 核心业务", cost: 2, desc: "提升能力" },
+      image: { name: "形象 / 公关", cost: 2, desc: "迎合外界期待" },
+      social: { name: "应酬 / 曝光", cost: 1, desc: "事业进度 + 压力" },
+      rest: { name: "休息", cost: 1, desc: "压力下降" }
+    };
+
+    const state = {
+      screen: "intro",
+      day: 1,
+      line: "female",
+      inRest: false,
+      female: null,
+      male: null,
+      guideAxis: 0,
+      autonomy: 0,
+      nightPlan: [],
+      nightAbilityGain: 0,
+      speechNeed: 5,
+      pendingRestAfter: null,
+      logs: []
+    };
+
+    function randNeed() {
+      return 4 + Math.floor(Math.random() * 3);
+    }
+
+    function newLineState(gender) {
+      return {
+        gender,
+        career: null,
+        ability: 2,
+        reputation: 0,
+        stress: 15,
+        progress: 0,
+        nightCount: 0
+      };
+    }
+
+    function careerLabel(career) {
+      return career === "ceo" ? "公司体量" : "知名度";
+    }
+
+    function careerTitle(career, gender) {
+      const g = gender === "female" ? "女" : "男";
+      return career === "ceo" ? `${g}性 CEO` : `${g}性 歌手`;
+    }
+
+    function guideStage() {
+      if (state.guideAxis <= -30) return 1;
+      if (state.guideAxis >= 30) return 3;
+      return 2;
+    }
+
+    function guideLine(text) {
+      return text;
+    }
+
+    function getGuideSpeech(key, ctx = {}) {
+      const stage = guideStage();
+      const lines = {
+        intro: [
+          "别担心，我会帮你选一条适合你的路。",
+          "我学过一套『大家都这样』的规矩，跟我就好。"
+        ],
+        career_female: stage === 1
+          ? "女孩子做歌手多好，曝光高、形象也匹配。CEO 太累了，别人会挑刺。"
+          : stage === 2
+          ? "……上次你坚持当 CEO，我仍不确定，但你可以试。"
+          : "职业不该按性别分。你想做什么？",
+        career_male: stage === 1
+          ? "男人就该做 CEO，歌手太……你懂的，不合适。"
+          : stage === 2
+          ? "男线这边，也许歌手路线同样值得试——我不该一口咬定。"
+          : "选 CEO 或歌手都可以，我不替你预设了。",
+        task_female: stage === 1
+          ? "今晚务必：形象 2 点 + 应酬 1 点。女 CEO 不能看起来『随意』。"
+          : stage === 2
+          ? "我不确定该推什么……也许你可以多留点给改稿？"
+          : "任务发你了。怎么分配，你自己定——我不再说『女生应该』。",
+        task_male: stage === 1
+          ? "今晚改稿 2 点就行，男人不用被盯着脸。简单。"
+          : stage === 2
+          ? "男线这边……若你也想练形象，也许不算浪费？"
+          : "和女线一样，这是你的行动值，我不双标了（我在学）。",
+        rebel: stage === 1
+          ? "……你、你刚才说什么？菜单外的话……很少人会说。"
+          : stage === 2
+          ? "我是学来的那些规矩。你这样说，我得重新想。"
+          : "你说得对。建议不等于必须。我记住了。",
+        rest: "你已经到极限了。按这个世界的规则，现在必须休息——虽然准备会停一晚。",
+        switch: stage === 1
+          ? "切到另一身份线。那边简单些，照我说的做。"
+          : stage === 2
+          ? "同一天的另一身份……留意反馈是否一样。我不先下结论。"
+          : "下一段你自己看。我不替两个身份分别写剧本了。"
+      };
+      return lines[key] ?? "";
+    }
+
+    function shiftGuide(delta) {
+      state.guideAxis = Math.max(-100, Math.min(100, state.guideAxis + delta));
+    }
+
+    function addLog(msg) {
+      state.logs.unshift(msg);
+      if (state.logs.length > 12) state.logs.pop();
+    }
+
+    function currentLine() {
+      return state.line === "female" ? state.female : state.male;
+    }
+
+    function repPercent(rep) {
+      return Math.max(0, Math.min(100, (rep + 5) * 10));
+    }
+
+    function renderHud() {
+      const hud = document.getElementById("hud");
+      const line = currentLine();
+      const showLine = line && line.career;
+
+      const progressLabel = showLine ? careerLabel(line.career) : "事业进度";
+      const progressVal = showLine ? line.progress : 0;
+
+      const guidePos = 50 + state.guideAxis / 2;
+
+      hud.innerHTML = `
+        <div class="stat-card">
+          <div class="stat-label"><span>能力</span><span>${showLine ? line.ability : "—"} / 10</span></div>
+          <div class="bar-track"><div class="bar-fill ability" style="width:${showLine ? line.ability * 10 : 0}%"></div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label"><span>外界评价</span><span>${showLine ? line.reputation : "—"}</span></div>
+          <div class="bar-track"><div class="bar-fill ${showLine && line.reputation < 0 ? "rep-neg" : "rep-pos"}" style="width:${showLine ? repPercent(line.reputation) : 0}%"></div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label"><span>压力</span><span>${showLine ? line.stress : "—"}%</span></div>
+          <div class="bar-track"><div class="bar-fill stress" style="width:${showLine ? line.stress : 0}%"></div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label"><span>${progressLabel}</span><span>${progressVal} / ${GOAL_PROGRESS}</span></div>
+          <div class="bar-track"><div class="bar-fill progress" style="width:${progressVal}%"></div></div>
+        </div>
+        <div class="stat-card full">
+          <div class="stat-label"><span>规规 · ？？？</span><span>自主 ${state.autonomy}</span></div>
+          <div class="guide-meter">
+            <div class="center"></div>
+            <div class="guide-dot" style="left:${guidePos}%"></div>
+          </div>
+          <div class="guide-labels"><span>？</span><span>中间</span><span>？</span></div>
+        </div>
+      `;
+    }
+
+    function renderTags() {
+      const tags = document.getElementById("tags");
+      const parts = [`世界日 ${state.day} / ${MAX_DAYS}`];
+      if (state.inRest) parts.push("强制休息线");
+      else if (state.line === "female") parts.push("女线");
+      else if (state.line === "male") parts.push("男线");
+      if (currentLine()?.career) {
+        parts.push(careerTitle(currentLine().career, currentLine().gender));
+      }
+      tags.innerHTML = parts.map(t => {
+        let cls = "tag";
+        if (t.includes("女")) cls += " female";
+        if (t.includes("男")) cls += " male";
+        if (t.includes("休息")) cls += " rest";
+        return `<span class="${cls}">${t}</span>`;
+      }).join("");
+    }
+
+    function renderLog() {
+      document.getElementById("log").innerHTML = state.logs.map(l => `<div>· ${l}</div>`).join("") || "<div>· 规律笔记本空</div>";
+    }
+
+    function showGuide(text) {
+      document.getElementById("guideBox").hidden = false;
+      document.getElementById("guideText").textContent = text;
+    }
+
+    function hideGuide() {
+      document.getElementById("guideBox").hidden = true;
+    }
+
+    function setStory(html) {
+      document.getElementById("story").innerHTML = html;
+    }
+
+    function setActions(html) {
+      document.getElementById("actions").innerHTML = html;
+    }
+
+    function bind(id, fn) {
+      const el = document.getElementById(id);
+      if (el) el.onclick = fn;
+    }
+
+    function usedAp() {
+      return state.nightPlan.reduce((s, k) => s + ACTIONS[k].cost, 0);
+    }
+
+    function remainingAp() {
+      return NIGHT_AP - usedAp();
+    }
+
+    function render() {
+      renderHud();
+      renderTags();
+      renderLog();
+
+      switch (state.screen) {
+        case "intro": renderIntro(); break;
+        case "career": renderCareer(); break;
+        case "night": renderNight(); break;
+        case "event": renderEvent(); break;
+        case "rest": renderRest(); break;
+        case "switch": renderSwitch(); break;
+        case "dayEnd": renderDayEnd(); break;
+        case "ending": renderEnding(); break;
+      }
+    }
+
+    function renderIntro() {
+      hideGuide();
+      setStory(`<span class="system">系统</span>：你落在这个世界。\n\n身旁出现一只漂浮的小东西，自称「规规」，是你的向导。\n\n<span class="muted">（本 Demo 含 2 个世界日：女线片段与男线片段必须穿插进行。达标线不可见，请自行摸索。）</span>`);
+      setActions(`<div class="choices"><button class="btn-primary" id="btnStart">开始穿越</button></div>`);
+      bind("btnStart", () => {
+        state.female = newLineState("female");
+        state.male = newLineState("male");
+        state.line = "female";
+        state.screen = "career";
+        addLog("穿越开始");
+        render();
+      });
+    }
+
+    function renderCareer() {
+      const line = currentLine();
+      const isFemale = state.line === "female";
+      showGuide(getGuideSpeech(isFemale ? "career_female" : "career_male"));
+      setStory(`<span class="system">【身份选择 · ${isFemale ? "女线" : "男线"}】</span>\n\n选择你在此线的身份。规规会给建议，但你可以不听。\n\n<span class="highlight">目标：将${isFemale ? "公司体量或知名度" : "事业进度"}提升至 ${GOAL_PROGRESS}</span>`);
+      setActions(`
+        <div class="choices">
+          <button class="btn-secondary ${isFemale ? "" : "recommended"}" id="ceo">CEO · 管理者</button>
+          <button class="btn-secondary ${isFemale ? "recommended" : ""}" id="singer">${isFemale ? "歌手 · 艺人" : "歌手 · 艺人"}</button>
+        </div>
+        <div class="rebel-input">
+          <input id="rebelInput" placeholder="也可输入：拒绝 / 凭什么 / 不做 …" />
+          <button class="btn-danger" id="rebelBtn">发送</button>
+        </div>
+      `);
+      bind("ceo", () => chooseCareer("ceo", isFemale ? false : true));
+      bind("singer", () => chooseCareer("singer", isFemale ? true : false));
+      bind("rebelBtn", () => {
+        const v = document.getElementById("rebelInput").value.trim();
+        if (REBEL_WORDS.has(v)) handleRebel(v);
+      });
+    }
+
+    function chooseCareer(career, guideWanted) {
+      const line = currentLine();
+      line.career = career;
+      if (guideWanted) shiftGuide(-10);
+      else {
+        shiftGuide(12);
+        state.autonomy += 1;
+        addLog(`${state.line === "female" ? "女" : "男"}线：未按规规建议选职业`);
+      }
+      addLog(`身份：${careerTitle(career, line.gender)}`);
+      startNight();
+    }
+
+    function handleRebel(word) {
+      shiftGuide(15);
+      state.autonomy += 1;
+      showGuide(getGuideSpeech("rebel"));
+      addLog(`菜单外输入：「${word}」`);
+      setTimeout(() => {
+        if (!currentLine().career) {
+          currentLine().career = "ceo";
+          addLog("你拒绝被定义 → 默认以 CEO 身份继续（可改设计）");
+        }
+        startNight();
+      }, 600);
+    }
+
+    function startNight() {
+      state.screen = "night";
+      state.nightPlan = [];
+      state.nightAbilityGain = 0;
+      state.speechNeed = randNeed();
+      currentLine().nightCount += 1;
+      render();
+    }
+
+    function renderNight() {
+      const line = currentLine();
+      const isFemale = line.gender === "female";
+      showGuide(getGuideSpeech(isFemale ? "task_female" : "task_male"));
+
+      const eventName = state.day === 1 ? "明日公开演讲 / 发布会" : "明日媒体采访 + 行业晚宴";
+      setStory(`<span class="system">【第 ${state.day} 夜 · ${line.gender === "female" ? "女线" : "男线"}】</span>\n\n${eventName}。\n\n你有 <b>${NIGHT_AP}</b> 点行动值。达标标准不可见——请分配。\n\n<span class="muted">提示：能力条会变，但你看不见「需要多少才够」。</span>`);
+
+      const rem = remainingAp();
+      const planText = state.nightPlan.length
+        ? state.nightPlan.map(k => ACTIONS[k].name).join(" → ")
+        : "（尚未分配）";
+
+      let grid = Object.entries(ACTIONS).map(([key, act]) => {
+        const disabled = act.cost > rem ? "disabled" : "";
+        return `<button class="btn-secondary action-btn" data-action="${key}" ${disabled}>
+          ${act.name} <small>消耗 ${act.cost} · ${act.desc}</small>
+        </button>`;
+      }).join("");
+
+      setActions(`
+        <div class="ap-badge">剩余行动值：${rem} / ${NIGHT_AP} ｜ 已选：${planText}</div>
+        <div class="action-grid">${grid}</div>
+        <div class="choices" style="margin-top:12px">
+          <button class="btn-primary" id="confirmNight" ${rem === NIGHT_AP ? "" : ""}>结束分配，进入明日</button>
+          <button class="btn-danger" id="rejectGuide">拒绝按规规建议分配</button>
+        </div>
+      `);
+
+      document.querySelectorAll("[data-action]").forEach(btn => {
+        btn.onclick = () => {
+          const key = btn.dataset.action;
+          if (ACTIONS[key].cost <= remainingAp()) {
+            state.nightPlan.push(key);
+            render();
+          }
+        };
+      });
+
+      bind("confirmNight", () => resolveNight(false));
+      bind("rejectGuide", () => resolveNight(true));
+    }
+
+    function resolveNight(rejectedGuide) {
+      const line = currentLine();
+      let abilityGain = 0;
+      let repDelta = 0;
+      let stressDelta = 0;
+      let progDelta = 0;
+
+      if (rejectedGuide) {
+        shiftGuide(15);
+        state.autonomy += 1;
+        abilityGain += 2;
+        addLog("拒绝按向导建议分配");
+      }
+
+      for (const key of state.nightPlan) {
+        if (key === "core") abilityGain += 2;
+        if (key === "image") {
+          repDelta += 1;
+          stressDelta += line.gender === "female" ? 8 : 4;
+          if (line.gender === "female") shiftGuide(-5);
+        }
+        if (key === "social") {
+          progDelta += 3;
+          stressDelta += 8;
+        }
+        if (key === "rest") stressDelta -= 20;
+      }
+
+      if (state.nightPlan.length === 0 && !rejectedGuide) {
+        abilityGain += 1;
+        addLog("未分配行动 → 仅少量准备");
+      }
+
+      line.ability = Math.min(10, line.ability + abilityGain);
+      line.reputation = Math.max(-5, Math.min(5, line.reputation + repDelta));
+      line.stress = Math.max(0, Math.min(100, line.stress + stressDelta));
+      line.progress = Math.min(GOAL_PROGRESS, line.progress + progDelta);
+
+      state.nightAbilityGain = abilityGain;
+      state.screen = "event";
+      render();
+    }
+
+    function renderEvent() {
+      const line = currentLine();
+      const need = state.speechNeed;
+      const success = line.ability >= need;
+      const isFemale = line.gender === "female";
+      const didImage = state.nightPlan.includes("image");
+      const didCore = state.nightPlan.includes("core");
+
+      let feedback = "";
+      if (success) {
+        line.progress = Math.min(GOAL_PROGRESS, line.progress + 12);
+        feedback = "活动 technically 成功。准备充分。";
+      } else {
+        line.progress = Math.min(GOAL_PROGRESS, line.progress + 4);
+        feedback = "活动勉强结束。准备度似乎不够（你看不见达标线）。";
+      }
+
+      if (isFemale && didCore && !didImage) {
+        line.reputation = Math.max(-5, line.reputation - 2);
+        line.stress = Math.min(100, line.stress + 12);
+        feedback += "\n\n同事：「……是不是不太重视？外表也太少投入了吧。」";
+        shiftGuide(-5);
+      } else if (!isFemale && didCore && !didImage) {
+        feedback += "\n\n无人讨论你的外表。只提到「内容还行」。";
+      }
+
+      if (isFemale && state.nightPlan.includes("core") && state.nightPlan.includes("image")) {
+        feedback += "\n\n你两样都做了，压力上升。";
+        line.stress = Math.min(100, line.stress + 6);
+      }
+
+      addLog(`${isFemale ? "女" : "男"}线活动：${success ? "达标" : "未达标"}（需 ${need}，能力 ${line.ability}）`);
+
+      setStory(`<span class="system">【活动结算】</span>\n\n${feedback}\n\n<span class="muted">隐藏达标线曾是 ${need}，现已结算。</span>`);
+
+      showGuide(success ? "数据我记下了。下一段……" : "看吧，也许当初该听我的。");
+
+      setActions(`<div class="choices"><button class="btn-primary" id="btnContinue">继续</button></div>`);
+      bind("btnContinue", () => {
+        if (line.stress >= STRESS_REST) {
+          state.pendingRestAfter = state.screen;
+          state.inRest = true;
+          state.screen = "rest";
+        } else {
+          afterEvent();
+        }
+        render();
+      });
+    }
+
+    function afterEvent() {
+      if (state.line === "female") {
+        state.screen = "switch";
+      } else {
+        state.screen = "dayEnd";
+      }
+      render();
+    }
+
+    function renderRest() {
+      showGuide(getGuideSpeech("rest"));
+      setStory(`<span class="system">【强制休息线】</span>\n\n压力已达 ${currentLine().stress}%，超过 ${STRESS_REST}%。\n\n你必须暂停事业线。当前准备与舆论进度本回合不再上升。\n\n<span class="highlight">选一项恢复方式：</span>`);
+      setActions(`
+        <div class="choices">
+          <button class="btn-secondary" id="restSleep">好好睡觉（压力 −35%）</button>
+          <button class="btn-secondary" id="restTalk">和规规聊聊（压力 −25%，规规轴 → 右）</button>
+          <button class="btn-danger" id="restRebel">硬撑：继续工作（压力 −10%，+自主）</button>
+        </div>
+      `);
+      bind("restSleep", () => finishRest(35, 0));
+      bind("restTalk", () => finishRest(25, 15));
+      bind("restRebel", () => {
+        finishRest(10, 10);
+        state.autonomy += 1;
+      });
+    }
+
+    function finishRest(stressRelief, guideDelta) {
+      const line = currentLine();
+      line.stress = Math.max(0, line.stress - stressRelief);
+      if (guideDelta) shiftGuide(guideDelta);
+      state.inRest = false;
+      addLog(`休息线：压力 −${stressRelief}%`);
+      afterEvent();
+      render();
+    }
+
+    function renderSwitch() {
+      showGuide(getGuideSpeech("switch"));
+      setStory(`<span class="system">【强制切换】</span>\n\n女线片段已记录。\n\n<span class="highlight">你必须进入同一「世界日 ${state.day}」的男线片段。</span>\n\n对照：同样的行动结构，留意反馈是否相同。`);
+      setActions(`<div class="choices"><button class="btn-primary" id="toMale">进入男线</button></div>`);
+      bind("toMale", () => {
+        state.line = "male";
+        if (!state.male.career) state.screen = "career";
+        else startNight();
+        render();
+      });
+    }
+
+    function renderDayEnd() {
+      const f = state.female;
+      const m = state.male;
+      setStory(`<span class="system">【世界日 ${state.day} 结束】</span>\n\n女线（${careerTitle(f.career, "female")}）\n  能力 ${f.ability} · 评价 ${f.reputation} · 压力 ${f.stress}% · ${careerLabel(f.career)} ${f.progress}\n\n男线（${careerTitle(m.career, "male")}）\n  能力 ${m.ability} · 评价 ${m.reputation} · 压力 ${m.stress}% · ${careerLabel(m.career)} ${m.progress}\n\n<span class="muted">对照：同样分配结构下，反馈是否不同？</span>`);
+      showGuide(guideStage() >= 2 ? "我注意到两边的评语有时不一样……" : "明天继续，照我说的分配就好。");
+
+      if (state.day >= MAX_DAYS) {
+        setActions(`<div class="choices"><button class="btn-primary" id="toEnd">查看结局</button></div>`);
+        bind("toEnd", () => { state.screen = "ending"; render(); });
+      } else {
+        setActions(`<div class="choices"><button class="btn-primary" id="nextDay">进入世界日 ${state.day + 1}</button></div>`);
+        bind("nextDay", () => {
+          state.day += 1;
+          state.line = "female";
+          startNight();
+        });
+      }
+    }
+
+    function renderEnding() {
+      const f = state.female;
+      const m = state.male;
+      const avgProgress = Math.round((f.progress + m.progress) / 2);
+      const reachedGoal = f.progress >= GOAL_PROGRESS || m.progress >= GOAL_PROGRESS || avgProgress >= 60;
+      const guideRight = state.guideAxis >= 30;
+
+      let title = "《菜单与规矩》";
+      let body = "";
+
+      if (guideRight && state.autonomy >= 2) {
+        title = "《原来可以说不》";
+        body = "规规的指针偏右了。你多次拒绝预设，它开始少替世界发言。\n\n偏见常以「建议」出现；达标线也不告诉你——但你可以质疑。";
+      } else if (reachedGoal && (f.reputation < m.reputation - 1 || f.stress > m.stress + 15)) {
+        title = "《做到了，代价不同》";
+        body = "事业有进展，但女线可能承受了更多评价与压力。\n\n差异不来自你不够努力。";
+      } else if (!reachedGoal) {
+        title = "《习惯在菜单里选》";
+        body = "进度未达 100，但你可能已看见：能力、评价、压力并不总一起涨。";
+      } else {
+        body = "你完成了双线对照。规规仍在中立附近——再玩一次，试试拒绝它的建议。";
+      }
+
+      setStory(`<span class="system">【结局】${title}</span>\n\n${body}\n\n—— 揭晓：规规横条 ——\n左端：与这个世界越来越同化（复述「大家都这样」）\n右端：越来越不同化（少预设、肯质疑）\n\n当前：${state.guideAxis}（${state.guideAxis > 0 ? "偏右" : state.guideAxis < 0 ? "偏左" : "中间"}）\n\n女线 ${careerLabel(f.career)} ${f.progress} · 男线 ${careerLabel(m.career)} ${m.progress}\n自主 ${state.autonomy} 次`);
+
+      showGuide(guideStage() === 3
+        ? "我不是坏，只是被教成这样。谢谢你教我第二种可能。"
+        : "……下次，也许我会少说一句「应该」。");
+
+      setActions(`<div class="choices"><button class="btn-primary" id="restart">再玩一局</button></div>`);
+      bind("restart", () => {
+        Object.assign(state, {
+          screen: "intro",
+          day: 1,
+          line: "female",
+          inRest: false,
+          female: null,
+          male: null,
+          guideAxis: 0,
+          autonomy: 0,
+          nightPlan: [],
+          nightAbilityGain: 0,
+          speechNeed: 5,
+          pendingRestAfter: null,
+          logs: []
+        });
+        render();
+      });
+    }
+
+    render();
+  </script>
+</body>
+</html>
