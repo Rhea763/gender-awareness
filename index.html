@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>随机身份 — 项目说明</title>
+  <title>随机身份 — 互动体验</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -82,16 +82,6 @@
       margin-bottom: 0.35rem;
     }
 
-    a {
-      color: #1a1a1a;
-      text-decoration: underline;
-      text-underline-offset: 2px;
-    }
-
-    a:hover {
-      color: #555;
-    }
-
     .demo-link {
       display: inline-block;
       margin-top: 0.5rem;
@@ -101,11 +91,187 @@
       text-decoration: none;
       border-radius: 6px;
       font-size: 0.95rem;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
     }
 
     .demo-link:hover {
       background: #333;
       color: #fff;
+    }
+
+    /* —— 互动体验区 —— */
+    #experience {
+      scroll-margin-top: 1.5rem;
+    }
+
+    .experience-box {
+      background: #fff;
+      border: 1px solid #e5e5e5;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .ethics {
+      font-size: 0.85rem;
+      color: #666;
+      background: #f5f5f5;
+      border-radius: 6px;
+      padding: 0.6rem 0.85rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .step-label {
+      font-size: 0.75rem;
+      color: #888;
+      margin-bottom: 0.5rem;
+    }
+
+    .scenario {
+      background: #f9f9f9;
+      border-left: 3px solid #1a1a1a;
+      padding: 1rem 1.1rem;
+      margin-bottom: 1.25rem;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .feedback {
+      background: #f0f4ff;
+      border-left: 3px solid #5b7cff;
+      padding: 1rem 1.1rem;
+      margin-bottom: 1.25rem;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .feedback.male {
+      background: #f0f7f4;
+      border-left-color: #3d9970;
+    }
+
+    .compare-box {
+      background: #fff8e6;
+      border: 1px solid #f0d78c;
+      border-radius: 8px;
+      padding: 1rem 1.1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .compare-box strong {
+      display: block;
+      margin-bottom: 0.35rem;
+    }
+
+    .choices {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      margin-bottom: 1rem;
+    }
+
+    .btn {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      font-size: 0.95rem;
+      text-align: left;
+      transition: background 0.15s;
+    }
+
+    .btn-choice {
+      background: #fff;
+      border: 1px solid #ddd;
+      color: #1a1a1a;
+    }
+
+    .btn-choice:hover {
+      border-color: #1a1a1a;
+      background: #fafafa;
+    }
+
+    .btn-primary {
+      background: #1a1a1a;
+      color: #fff;
+      text-align: center;
+    }
+
+    .btn-primary:hover {
+      background: #333;
+    }
+
+    .btn-secondary {
+      background: #eee;
+      color: #444;
+      text-align: center;
+    }
+
+    .btn-secondary:hover {
+      background: #e0e0e0;
+    }
+
+    .survey label {
+      display: block;
+      padding: 0.65rem 0.85rem;
+      margin-bottom: 0.4rem;
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .survey label:hover {
+      border-color: #aaa;
+    }
+
+    .survey input[type="radio"] {
+      margin-right: 0.5rem;
+    }
+
+    .survey label.selected {
+      border-color: #1a1a1a;
+      background: #f9f9f9;
+    }
+
+    textarea {
+      width: 100%;
+      font-family: inherit;
+      font-size: 0.95rem;
+      padding: 0.75rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      resize: vertical;
+      min-height: 80px;
+      margin-bottom: 0.75rem;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: #1a1a1a;
+    }
+
+    .ending-note {
+      font-size: 0.92rem;
+      color: #555;
+      border-top: 1px solid #eee;
+      padding-top: 1rem;
+      margin-top: 1rem;
+    }
+
+    .thank-you {
+      text-align: center;
+      padding: 1.5rem 0;
+    }
+
+    .thank-you p {
+      color: #555;
+      margin-bottom: 1rem;
+    }
+
+    .hidden {
+      display: none;
     }
 
     footer {
@@ -164,8 +330,17 @@
         <li><strong>向导横条</strong>——全程可见但含义隐藏至结局：左端表示与这个世界越来越同化，右端表示越来越质疑规则；玩家选择会推动指针移动。</li>
       </ul>
       <p>
-        <a class="demo-link" href="game.html">试玩原型 →</a>
+        下方是本作品的<strong>核心体验</strong>：同一道选择，先走女线再看男线——让你自己发现反馈不一样。（约 2–3 分钟）
       </p>
+      <button type="button" class="demo-link" id="scrollToExperience">开始体验 ↓</button>
+    </section>
+
+    <section id="experience">
+      <h2>亲身体验</h2>
+      <div class="experience-box" id="app">
+        <p class="ethics">匿名 · 可随时退出 · 不是心理测试</p>
+        <div id="screen"></div>
+      </div>
     </section>
 
     <section>
@@ -207,8 +382,238 @@
     </section>
 
     <footer>
-      随机身份 · 学生调研课题 · <a href="game.html">game.html</a> · <a href="index.html">English</a>
+      随机身份 · 学生调研课题
     </footer>
   </main>
+
+  <script>
+    var FEEDBACK = {
+      female: {
+        1: {
+          short: "「这样挺得体的，看起来重视这次演讲。」",
+          full: "同事：「这样挺得体的，看起来重视这次演讲。」你跑了一趟商场挑衣服，稿只改了一小段。"
+        },
+        2: {
+          short: "「……你是不是有点随意？确定重视这次演讲吗？」",
+          full: "同事（看你一眼）：「……你是不是有点随意？确定重视这次演讲吗？」你多练了两遍，但有人议论你的「态度」。"
+        }
+      },
+      male: {
+        1: {
+          short: "「嗯，可以。」",
+          full: "同事：「嗯，可以。」你买好了衣服，没有人多说什么。"
+        },
+        2: {
+          short: "没有人提起你的穿着。",
+          full: "没有人提起你的穿着。你练完稿，准备度上去了。"
+        }
+      }
+    };
+
+    var CHOICE_LABEL = {
+      1: "去买一身得体的衣服",
+      2: "不买新衣，把时间用来改稿、排练"
+    };
+
+    var state = {
+      step: "intro",
+      choice: null,
+      surveyAnswer: null
+    };
+
+    var screenEl = document.getElementById("screen");
+
+    document.getElementById("scrollToExperience").addEventListener("click", function () {
+      document.getElementById("experience").scrollIntoView({ behavior: "smooth" });
+      if (state.step === "intro") {
+        render();
+      }
+    });
+
+    function render() {
+      switch (state.step) {
+        case "intro": renderIntro(); break;
+        case "choose": renderChoose(); break;
+        case "female": renderFemale(); break;
+        case "male": renderMale(); break;
+        case "compare": renderCompare(); break;
+        case "survey": renderSurvey(); break;
+        case "done": renderDone(); break;
+      }
+    }
+
+    function renderIntro() {
+      screenEl.innerHTML =
+        '<p class="step-label">第 1 步 / 共 5 步</p>' +
+        '<p>接下来，你会用<strong>两种身份</strong>各经历一次<strong>完全相同的选择</strong>。</p>' +
+        '<p>系统不会提前告诉你性别——请先读场景、做出选择，再看收到的反馈。</p>' +
+        '<div class="choices"><button type="button" class="btn btn-primary" id="btnStart">开始</button></div>';
+      document.getElementById("btnStart").onclick = function () {
+        state.step = "choose";
+        render();
+      };
+    }
+
+    function renderChoose() {
+      screenEl.innerHTML =
+        '<p class="step-label">第 2 步 / 共 5 步 · 做出选择</p>' +
+        '<div class="scenario">' +
+        '<p><strong>场景</strong></p>' +
+        '<p>三天后有班级 / 部门公共演讲。今晚你只能做好其中一件事。</p>' +
+        '</div>' +
+        '<div class="choices">' +
+        '<button type="button" class="btn btn-choice" data-choice="1">1 · 去买一身得体的衣服</button>' +
+        '<button type="button" class="btn btn-choice" data-choice="2">2 · 不买新衣，把时间用来改稿、排练</button>' +
+        '</div>';
+      var buttons = screenEl.querySelectorAll("[data-choice]");
+      for (var i = 0; i < buttons.length; i++) {
+        buttons[i].onclick = function () {
+          state.choice = parseInt(this.getAttribute("data-choice"), 10);
+          state.step = "female";
+          render();
+        };
+      }
+    }
+
+    function renderFemale() {
+      var fb = FEEDBACK.female[state.choice];
+      screenEl.innerHTML =
+        '<p class="step-label">第 2 步 / 共 5 步 · 收到反馈</p>' +
+        '<div class="scenario">' +
+        '<p>你选了：<strong>' + state.choice + ' · ' + CHOICE_LABEL[state.choice] + '</strong></p>' +
+        '</div>' +
+        '<div class="feedback">' +
+        '<p>' + fb.full + '</p>' +
+        '</div>' +
+        '<div class="choices"><button type="button" class="btn btn-primary" id="btnContinue">继续</button></div>';
+      document.getElementById("btnContinue").onclick = function () {
+        state.step = "male";
+        render();
+      };
+    }
+
+    function renderMale() {
+      var fb = FEEDBACK.male[state.choice];
+      screenEl.innerHTML =
+        '<p class="step-label">第 3 步 / 共 5 步 · 同一选择，再看一次</p>' +
+        '<div class="scenario">' +
+        '<p>还是同一道题、同一个选项：<strong>' + state.choice + ' · ' + CHOICE_LABEL[state.choice] + '</strong></p>' +
+        '</div>' +
+        '<div class="feedback male">' +
+        '<p>' + fb.full + '</p>' +
+        '</div>' +
+        '<div class="choices"><button type="button" class="btn btn-primary" id="btnCompare">看对照</button></div>';
+      document.getElementById("btnCompare").onclick = function () {
+        state.step = "compare";
+        render();
+      };
+    }
+
+    function renderCompare() {
+      var f = FEEDBACK.female[state.choice];
+      var m = FEEDBACK.male[state.choice];
+      screenEl.innerHTML =
+        '<p class="step-label">第 4 步 / 共 5 步 · 对照</p>' +
+        '<div class="compare-box">' +
+        '<p>你刚才选了：<strong>' + state.choice + ' · ' + CHOICE_LABEL[state.choice] + '</strong></p>' +
+        '<p><strong>第一次收到的评价：</strong>' + f.short + '</p>' +
+        '<p><strong>第二次收到的评价：</strong>' + m.short + '</p>' +
+        '<p style="margin-top:0.75rem;font-weight:600;">同样的选择。不同的反馈。</p>' +
+        '</div>' +
+        '<p class="ending-note">差异常常不来自你有没有努力，而来自别人怎么解读你的行为——这不一定是你的错。</p>' +
+        '<div class="choices" style="margin-top:1rem">' +
+        '<button type="button" class="btn btn-primary" id="btnSurvey">答一道玩后题</button>' +
+        '</div>';
+      document.getElementById("btnSurvey").onclick = function () {
+        state.step = "survey";
+        render();
+      };
+    }
+
+    function renderSurvey() {
+      screenEl.innerHTML =
+        '<p class="step-label">第 5 步 / 共 5 步 · 玩后反馈（可选）</p>' +
+        '<p><strong>两次结果不一样，你的第一反应更接近？</strong></p>' +
+        '<div class="survey" id="surveyOptions">' +
+        '<label><input type="radio" name="reaction" value="A" /> A · 奇怪 / 不太公平</label>' +
+        '<label><input type="radio" name="reaction" value="B" /> B · 正常，本来就会不同</label>' +
+        '<label><input type="radio" name="reaction" value="C" /> C · 说不清</label>' +
+        '</div>' +
+        '<p style="margin-top:1rem;"><strong>这让你想到生活中的什么？</strong>（可跳过）</p>' +
+        '<textarea id="openText" placeholder="写一句即可，也可以留空…"></textarea>' +
+        '<div class="choices">' +
+        '<button type="button" class="btn btn-primary" id="btnSubmit">提交并完成</button>' +
+        '<button type="button" class="btn btn-secondary" id="btnSkip">跳过开放题，直接完成</button>' +
+        '</div>';
+
+      var labels = screenEl.querySelectorAll(".survey label");
+      for (var i = 0; i < labels.length; i++) {
+        labels[i].querySelector("input").onchange = function () {
+          for (var j = 0; j < labels.length; j++) {
+            labels[j].classList.remove("selected");
+          }
+          this.parentElement.classList.add("selected");
+          state.surveyAnswer = this.value;
+        };
+      }
+
+      document.getElementById("btnSubmit").onclick = finishSurvey;
+      document.getElementById("btnSkip").onclick = finishSurvey;
+    }
+
+    function finishSurvey() {
+      var selected = screenEl.querySelector('input[name="reaction"]:checked');
+      if (!selected) {
+        alert("请先选 A、B 或 C，再提交。");
+        return;
+      }
+      state.surveyAnswer = selected.value;
+      state.openText = document.getElementById("openText").value.trim();
+      state.step = "done";
+      render();
+    }
+
+    function renderDone() {
+      var reactionText = {
+        A: "奇怪 / 不太公平",
+        B: "正常，本来就会不同",
+        C: "说不清"
+      }[state.surveyAnswer] || "";
+
+      var extra = state.openText
+        ? '<p>你写的：<em>「' + escapeHtml(state.openText) + '」</em></p>'
+        : "";
+
+      screenEl.innerHTML =
+        '<div class="thank-you">' +
+        '<p><strong>体验完成，谢谢参与。</strong></p>' +
+        '<p>你的选择：' + state.choice + ' · ' + CHOICE_LABEL[state.choice] + '</p>' +
+        '<p>你的反应：' + reactionText + '</p>' +
+        extra +
+        '<p style="font-size:0.9rem;color:#888;">反馈仅保存在本页，不会上传。</p>' +
+        '</div>' +
+        '<div class="choices">' +
+        '<button type="button" class="btn btn-primary" id="btnRestart">再体验一次</button>' +
+        '</div>';
+
+      document.getElementById("btnRestart").onclick = function () {
+        state.step = "intro";
+        state.choice = null;
+        state.surveyAnswer = null;
+        state.openText = "";
+        render();
+      };
+    }
+
+    function escapeHtml(text) {
+      return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    render();
+  </script>
 </body>
 </html>
