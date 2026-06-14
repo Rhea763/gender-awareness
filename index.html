@@ -101,6 +101,47 @@
       color: #fff;
     }
 
+    .research-toggle {
+      width: 100%;
+      justify-content: space-between;
+      text-align: left;
+    }
+
+    .research-panel {
+      background: #fff;
+      border: 1px solid #e5e5e5;
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-top: 1rem;
+    }
+
+    .research-panel h3 {
+      font-size: 0.95rem;
+      margin: 1.25rem 0 0.45rem;
+    }
+
+    .research-panel h3:first-child {
+      margin-top: 0;
+    }
+
+    .research-panel p {
+      color: #444;
+      font-size: 0.95rem;
+    }
+
+    .research-panel .research-line {
+      background: #f7f7f7;
+      border-left: 3px solid #1a1a1a;
+      border-radius: 0 8px 8px 0;
+      padding: 0.8rem 0.95rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .research-note {
+      color: #777;
+      font-size: 0.85rem;
+    }
+
     /* —— 互动体验区 —— */
     #experience {
       scroll-margin-top: 1.5rem;
@@ -296,6 +337,33 @@
     </header>
 
     <section>
+      <h2>研究</h2>
+      <button type="button" class="demo-link research-toggle" id="researchToggle" aria-expanded="false" aria-controls="researchPanel">
+        研究 / The research <span aria-hidden="true">＋</span>
+      </button>
+      <div class="research-panel hidden" id="researchPanel">
+        <h3>研究问题 / Research question</h3>
+        <p class="research-line">How does Random Identity affect the sense of unfairness for people who have not studied gender?</p>
+
+        <h3>假设 / Hypothesis</h3>
+        <p class="research-line">I hypothesize that after using Random Identity, they will feel more that the same choice getting different feedback is unfair.</p>
+
+        <h3>为什么重要 / Why it matters</h3>
+        <p>很多人支持性别平等，但在真实生活里，同样的行为仍可能被不同评价。</p>
+        <p>这些评价会影响自信、压力、学校生活、工作机会，以及一个人会不会先责怪自己。</p>
+
+        <h3>我做了什么 / What I made</h3>
+        <p>我做了一个 2–3 分钟的网页互动体验。用户做同一个选择，先看一条路径的反馈，再看另一条路径的反馈。</p>
+        <p>页面最后让用户回答：两次结果不一样时，第一反应更接近「奇怪 / 不公平」「正常」还是「说不清」。</p>
+
+        <h3>初步发现 / Early takeaways</h3>
+        <p>文献告诉我：偏见不总是很明显，它也可能像「为你好」的建议。</p>
+        <p>我的 user study 还没开始，所以这里不写结论。现在的目标是测试：并排看到同一选择的不同反馈，能不能帮助人更清楚地说出「这不公平」。</p>
+        <p class="research-note">This is an exploratory student research project. It is not a psychological test.</p>
+      </div>
+    </section>
+
+    <section>
       <h2>社会议题</h2>
       <p>
         人们常常在不知不觉中吸收性别刻板印象。同样的行为——演讲前改稿而不是化妆、在讨论中抢先发言、拒绝额外的杂务——可能被解读为「专业」「有领导力」，也可能被说成「态度不好」「太强势」「不合群」，差别往往在于性别。
@@ -422,6 +490,17 @@
     };
 
     var screenEl = document.getElementById("screen");
+    var researchToggle = document.getElementById("researchToggle");
+    var researchPanel = document.getElementById("researchPanel");
+
+    researchToggle.addEventListener("click", function () {
+      var isOpen = researchToggle.getAttribute("aria-expanded") === "true";
+      researchToggle.setAttribute("aria-expanded", String(!isOpen));
+      researchPanel.classList.toggle("hidden", isOpen);
+      researchToggle.innerHTML = isOpen
+        ? '研究 / The research <span aria-hidden="true">＋</span>'
+        : '收起研究 / Hide the research <span aria-hidden="true">－</span>';
+    });
 
     document.getElementById("scrollToExperience").addEventListener("click", function () {
       document.getElementById("experience").scrollIntoView({ behavior: "smooth" });
