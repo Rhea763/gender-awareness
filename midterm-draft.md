@@ -32,15 +32,15 @@ My project asks people to notice this problem through a small experience, not th
 
 ## Literature Review
 
-Eagly and Karau's role congruity theory says that bias can happen when a woman's gender role is seen as different from a leadership or professional role. Their work helps explain why the same confident action may be judged differently. What is still not solved is how ordinary people can notice this bias in a small daily scene. My project uses one same choice and two different feedback paths to make that gap easier to see.
+Eagly and Karau's role congruity theory says that bias can happen when a woman's gender role is seen as different from a leadership or professional role. Their finding helps explain why the same confident action may be judged differently. What is not solved is how ordinary people can notice this bias in a small daily scene. My project uses one same choice and two feedback paths to make that gap easier to see.
 
-Glick and Fiske's work on ambivalent sexism shows that sexism is not only hostile. It can also look kind, protective, or "for your own good." This is important for my project because many gender expectations do not sound like direct attacks. They can sound like advice. What is still not solved is how to show this without making users feel blamed. My entry point is to make the work exploratory and non-diagnostic.
+Glick and Fiske's work on ambivalent sexism shows that sexism is not only hostile. It can also look kind, protective, or "for your own good." Their finding is important because many gender expectations do not sound like attacks. They sound like advice. What is not solved is how to show this without making users feel blamed. My project tries to be exploratory and non-diagnostic.
 
-Schmitt and Branscombe argue that seeing unfair treatment as discrimination can reduce self-blame. This connects directly to my ending message: the problem may not be that you did something wrong. What is still not solved is how a short interactive tool can support this shift. My project tests whether a simple comparison can make unfairness easier to name.
+Schmitt and Branscombe argue that seeing unfair treatment as discrimination can reduce self-blame. Their finding connects to my ending message: the problem may not be that you did something wrong. What is not solved is how a short interactive tool can support this shift. My project tests whether a simple comparison can make unfairness easier to name.
 
-Bain's work on subtle sexism says that subtle gender bias is hard to explain. Because it is unclear, people may blame themselves. This is close to my main concern. My project focuses on the moment when a user may think, "I did not do anything wrong. Why is the world like this?"
+Bain's work on subtle sexism says that subtle gender bias is hard to explain. Because it is unclear, people may blame themselves. What is not solved is how to turn a vague feeling into a clear question. My project focuses on the moment when a user may think, "I did not do anything wrong. Why is the world like this?"
 
-Research on Chinese university students shows a mixed picture. Some studies suggest that open gender stereotypes are weaker now. Other studies still find implicit career stereotypes, the idea that men are more "brilliant," and biased explanations in math-related cases. This gap is important. It suggests that saying "I believe in equality" may not be the same as seeing bias in a real situation. My project works inside this gap.
+Studies on Chinese university students show a mixed picture. Some studies suggest that open gender stereotypes are weaker now. Other studies still find implicit career stereotypes, the idea that men are more "brilliant," and biased explanations in math-related cases. What is not solved is the gap between saying "I believe in equality" and seeing bias in a real situation. My project works inside this gap.
 
 Kiddo, Fair Play, and IDEM show that games and interactive stories can help people notice bias. But each has limits for my topic. Kiddo is for children. Fair Play is about race, not gender, and it often needs guided discussion. IDEM is mainly a workplace training product and lacks strong public research evidence. My project is different because it is light, browser-based, and built around the same-choice, different-feedback comparison.
 
@@ -104,7 +104,7 @@ Akarsu, N., & Sakalli, N. (2025). *Women's self-silencing to sexist experiences*
 
 Bain, M. (2020). *Working women's attributions after subtle sexism* [Master's thesis, California State University, San Bernardino].
 
-Barrera, C., et al. (2025). *Kiddo*. Information, 16(3), 199.
+Barrera et al. (2025). *Kiddo*. Information, 16(3), 199.
 
 Catalyst. (2024). *The double-bind dilemma for women in leadership*.
 
@@ -116,11 +116,17 @@ Glick, P., & Fiske, S. T. (1996). *The ambivalent sexism inventory*.
 
 Glick, P., & Fiske, S. T. (2011). *Ambivalent sexism revisited*.
 
-Gutierrez, B., et al. (2014). *Fair Play*.
+Gutierrez et al. (2014). *Fair Play*.
+
+Hans Publishers. (n.d.). *College students' gender roles and occupational gender stereotypes*.
+
+Hans Publishers. (n.d.). *Implicit gender brilliance stereotypes among college students*.
 
 McKinsey China. (2023). *The new era of half the sky: Gender equality in China's workplace*.
 
 Pew Research Center. (2019). *How people around the world view gender equality in their countries*.
+
+Qian et al. (2024). *The disappearing gender stereotype*.
 
 Schmitt, M. T., & Branscombe, N. R. (2003). *It's not my fault: Why some attributions for discrimination are positive for members of disadvantaged groups*. Personality and Social Psychology Bulletin.
 
@@ -129,6 +135,8 @@ UN Women. (2022). *Gender Equality Attitudes Study 2022: Levers for change*.
 West, C., & Zimmerman, D. H. (1987). *Doing gender*.
 
 Zhaopin. (2023-2024). *Chinese women's workplace status survey report*.
+
+Zhou et al. (2022). *Mathematical gender stereotype explanatory bias*.
 
 ## Acknowledgements
 
