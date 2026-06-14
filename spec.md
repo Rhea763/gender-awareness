@@ -32,3 +32,13 @@
 - **页内选做**：开放一句——「这让你想到生活中的什么？」（可跳过）
 - **线下必做**：给 5 个朋友口头问 3 句——哪步最别扭？第几步发现不一样？像不像真的？
 - **分发**：校内 5–10 人 + 社交媒体一条链接；开头注明匿名、可退出、不是心理测试
+
+## Research Question & Hypothesis
+
+**Research Question**
+
+How does Random Identity affect the sense of unfairness for people who have not studied gender?
+
+**Hypothesis**
+
+I hypothesize that after using Random Identity, they will feel more that the same choice getting different feedback is unfair.
