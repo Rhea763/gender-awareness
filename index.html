@@ -101,6 +101,13 @@
       color: #fff;
     }
 
+    .demo-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      margin-top: 0.5rem;
+    }
+
     .research-toggle {
       width: 100%;
       justify-content: space-between;
@@ -400,7 +407,10 @@
       <p>
         下方是本作品的<strong>核心体验</strong>：同一道选择，先走女线再看男线——让你自己发现反馈不一样。（约 2–3 分钟）
       </p>
-      <button type="button" class="demo-link" id="scrollToExperience">开始体验 ↓</button>
+      <div class="demo-actions">
+        <button type="button" class="demo-link" id="scrollToExperience">开始体验 ↓</button>
+        <a class="demo-link" href="game.html">打开完整穿越 Demo →</a>
+      </div>
     </section>
 
     <section id="experience">
