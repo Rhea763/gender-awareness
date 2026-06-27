@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>规规 · DeepSeek 对话测试</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --panel: #1a1d28;
+      --line: #2f3545;
+      --text: #e8eaef;
+      --muted: #9aa3b5;
+      --guide: #c4b5fd;
+      --accent: #b794f6;
+      --good: #6ee7b7;
+      --bad: #fb7185;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "PingFang SC", system-ui, sans-serif;
+      background: radial-gradient(ellipse at top, #1a1528 0%, var(--bg) 55%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .wrap {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+    }
+
+    header { text-align: center; margin-bottom: 20px; }
+    header h1 { font-size: 1.2rem; }
+    header p { color: var(--muted); font-size: 0.85rem; margin-top: 6px; }
+
+    .status {
+      text-align: center;
+      font-size: 0.78rem;
+      margin-bottom: 10px;
+      color: var(--muted);
+    }
+
+    .status.ok { color: var(--good); }
+    .status.bad { color: var(--bad); }
+
+    .chat {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 420px;
+    }
+
+    .messages {
+      flex: 1;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow-y: auto;
+      max-height: 360px;
+    }
+
+    .msg {
+      max-width: 85%;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 0.92rem;
+      line-height: 1.55;
+      white-space: pre-wrap;
+    }
+
+    .msg.user {
+      align-self: flex-end;
+      background: rgba(183, 148, 246, 0.2);
+      border: 1px solid rgba(183, 148, 246, 0.35);
+    }
+
+    .msg.bot {
+      align-self: flex-start;
+      background: #151822;
+      border: 1px solid var(--line);
+    }
+
+    .msg.pending {
+      opacity: 0.75;
+      font-style: italic;
+    }
+
+    .msg.error {
+      align-self: flex-start;
+      background: rgba(251, 113, 133, 0.12);
+      border: 1px solid rgba(251, 113, 133, 0.45);
+      color: #fecdd3;
+    }
+
+    .composer {
+      display: flex;
+      gap: 8px;
+      padding: 12px;
+      border-top: 1px solid var(--line);
+      background: #12151e;
+    }
+
+    .composer input {
+      flex: 1;
+      border: 1px solid var(--line);
+      background: #0f1117;
+      color: var(--text);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font: inherit;
+    }
+
+    .composer button {
+      border: none;
+      background: var(--accent);
+      color: #1a1028;
+      border-radius: 8px;
+      padding: 0 14px;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .composer button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .hint {
+      margin-top: 12px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    .hint a { color: var(--guide); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>规规 · AI 对话</h1>
+      <p>本地测试 DeepSeek · 泡泡向导温柔答疑</p>
+    </header>
+
+    <p class="status" id="status">正在检查服务器…</p>
+
+    <div class="chat">
+      <div class="messages" id="messages">
+        <div class="msg bot">你好，我是规规。体验完「随机身份」后，有什么想聊的吗？</div>
+      </div>
+      <form class="composer" id="form">
+        <input id="input" type="text" placeholder="输入一句话…" autocomplete="off" />
+        <button type="submit" id="send">发送</button>
+      </form>
+    </div>
+
+    <p class="hint">
+      线上版通过 <code>/api/chat</code> 调用后端，API key 只在服务器环境变量里。
+      <a href="index.html">返回主页</a>
+    </p>
+  </div>
+
+  <script>
+    var messagesEl = document.getElementById("messages");
+    var form = document.getElementById("form");
+    var input = document.getElementById("input");
+    var sendBtn = document.getElementById("send");
+    var statusEl = document.getElementById("status");
+    var chatHistory = [];
+    var sending = false;
+
+    function addMsg(role, text, extraClass) {
+      var div = document.createElement("div");
+      div.className = "msg " + role + (extraClass ? " " + extraClass : "");
+      div.textContent = text;
+      messagesEl.appendChild(div);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+      return div;
+    }
+
+    function setStatus(text, ok) {
+      statusEl.textContent = text;
+      statusEl.className = "status " + (ok ? "ok" : "bad");
+    }
+
+    function checkHealth() {
+      fetch("/api/health")
+        .then(function (res) { return res.json(); })
+        .then(function (data) {
+          if (data.ok) {
+            setStatus("后端已连接，可以对话", true);
+          } else {
+            setStatus("后端在跑，但服务器还没配置 API key", false);
+          }
+        })
+        .catch(function () {
+          setStatus("连不上后端。本地请先 npm start；线上请确认已部署到 Vercel", false);
+        });
+    }
+
+    function sendMessage() {
+      if (sending) return;
+
+      var text = input.value.trim();
+      if (!text) return;
+
+      sending = true;
+      input.value = "";
+      sendBtn.disabled = true;
+
+      addMsg("user", text);
+      chatHistory.push({ role: "user", content: text });
+
+      var pending = addMsg("bot", "规规正在想…", "pending");
+
+      fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: chatHistory })
+      })
+        .then(function (res) {
+          return res.json().then(function (data) {
+            return { res: res, data: data };
+          });
+        })
+        .then(function (payload) {
+          if (!payload.res.ok) {
+            throw new Error(payload.data.error || "请求失败");
+          }
+          pending.textContent = payload.data.reply || "（空回复）";
+          pending.classList.remove("pending", "error");
+          chatHistory.push({ role: "assistant", content: payload.data.reply });
+        })
+        .catch(function (err) {
+          var hint = err && err.message ? err.message : "未知错误";
+          if (hint.indexOf("Failed to fetch") !== -1) {
+            hint = "连不上后端 /api/chat。本地用 npm start；线上检查 Vercel 部署";
+          }
+          pending.textContent = "出错了：" + hint;
+          pending.classList.remove("pending");
+          pending.classList.add("error");
+        })
+        .finally(function () {
+          sending = false;
+          sendBtn.disabled = false;
+          input.focus();
+        });
+    }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      sendMessage();
+    });
+
+    checkHealth();
+    input.focus();
+  </script>
+</body>
+</html>
