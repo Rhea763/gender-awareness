@@ -22,11 +22,96 @@
     main {
       max-width: 640px;
       margin: 0 auto;
-      padding: 4rem 1.5rem 6rem;
+      padding: 2rem 1.25rem 4rem;
     }
 
     header {
-      margin-bottom: 3.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .hero-box {
+      background: #fff;
+      border: 1px solid #e5e5e5;
+      border-radius: 12px;
+      padding: 1.25rem 1.35rem;
+      margin-top: 1.25rem;
+    }
+
+    .hero-box p {
+      margin-bottom: 0.75rem;
+      color: #333;
+    }
+
+    .hero-steps {
+      font-size: 0.92rem;
+      color: #555;
+      padding-left: 1.1rem;
+      margin: 0.75rem 0 1rem;
+    }
+
+    .hero-steps li {
+      margin-bottom: 0.35rem;
+    }
+
+    .hero-cta {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      margin-top: 1rem;
+    }
+
+    .hero-cta .demo-link {
+      margin-top: 0;
+      text-align: center;
+      width: 100%;
+    }
+
+    .demo-link.secondary {
+      background: #fff;
+      color: #1a1a1a;
+      border: 1px solid #ccc;
+    }
+
+    .demo-link.secondary:hover {
+      background: #f5f5f5;
+      color: #1a1a1a;
+    }
+
+    .time-note {
+      font-size: 0.85rem;
+      color: #777;
+      text-align: center;
+    }
+
+    @media (max-width: 480px) {
+      main {
+        padding: 1.25rem 1rem 3rem;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      .hero-box {
+        padding: 1rem;
+      }
+
+      .demo-actions {
+        flex-direction: column;
+      }
+
+      .demo-actions .demo-link {
+        width: 100%;
+        text-align: center;
+      }
+
+      .experience-box {
+        padding: 1rem;
+      }
+
+      .btn, .demo-link {
+        min-height: 44px;
+      }
     }
 
     h1 {
@@ -335,13 +420,35 @@
   <main>
     <header>
       <h1>随机身份</h1>
-      <p class="subtitle">一款关于无意识性别期待的互动体验——以及，因性别受到的不公，并不是你的错。</p>
-      <p style="margin-top: 1.25rem;">
-        <span class="tag">社会议题</span>
-        <span class="tag">互动调研</span>
-        <span class="tag">高中课题</span>
+      <p class="subtitle">做一个选择，分别以「女生」和「男生」的身份各看一遍结果——你会发现，同样的选择，收到的评价不一样。</p>
+      <div class="hero-box">
+        <p><strong>这是什么？</strong> 一个 2–3 分钟的网页小体验，关于日常里的性别双标（不是心理测试，也不用注册）。</p>
+        <ol class="hero-steps">
+          <li>读一个小场景（比如演讲前今晚做什么）</li>
+          <li>选 A 或 B</li>
+          <li>先看女生线反馈，再看男生线反馈，自己对照</li>
+        </ol>
+        <div class="hero-cta">
+          <button type="button" class="demo-link" id="heroStart">开始体验（约 2 分钟）↓</button>
+          <a class="demo-link secondary" href="game.html">完整版小游戏（约 10 分钟）→</a>
+        </div>
+        <p class="time-note">建议先玩上面的短体验；完整版含数值、剧情和向导「规规」。</p>
+      </div>
+      <p style="margin-top: 1rem;">
+        <span class="tag">2–3 分钟</span>
+        <span class="tag">匿名</span>
+        <span class="tag">学生课题</span>
       </p>
     </header>
+
+    <section id="experience">
+      <h2>亲身体验</h2>
+      <p style="font-size: 0.95rem; color: #555; margin-bottom: 0.5rem;">点「开始」，按提示选一次即可。</p>
+      <div class="experience-box" id="app">
+        <p class="ethics">匿名 · 可随时退出 · 不是心理测试</p>
+        <div id="screen"></div>
+      </div>
+    </section>
 
     <section>
       <h2>研究</h2>
@@ -405,19 +512,11 @@
         <li><strong>向导横条</strong>——全程可见但含义隐藏至结局：左端表示与这个世界越来越同化，右端表示越来越质疑规则；玩家选择会推动指针移动。</li>
       </ul>
       <p>
-        下方是本作品的<strong>核心体验</strong>：同一道选择，先走女线再看男线——让你自己发现反馈不一样。（约 2–3 分钟）
+        下方短体验是<strong>核心玩法</strong>：同一道题，先走女生线再看男生线——让你自己发现反馈不一样。
       </p>
       <div class="demo-actions">
-        <button type="button" class="demo-link" id="scrollToExperience">开始体验 ↓</button>
-        <a class="demo-link" href="game.html">打开完整穿越 Demo →</a>
-      </div>
-    </section>
-
-    <section id="experience">
-      <h2>亲身体验</h2>
-      <div class="experience-box" id="app">
-        <p class="ethics">匿名 · 可随时退出 · 不是心理测试</p>
-        <div id="screen"></div>
+        <button type="button" class="demo-link" id="scrollToExperience">回到短体验 ↓</button>
+        <a class="demo-link secondary" href="game.html">打开完整穿越 Demo →</a>
       </div>
     </section>
 
@@ -464,39 +563,42 @@
     </footer>
   </main>
 
+  <script src="assets/supabase-config.js"></script>
   <script>
     var FEEDBACK = {
       female: {
         1: {
-          short: "「这样挺得体的，看起来重视这次演讲。」",
-          full: "同事：「这样挺得体的，看起来重视这次演讲。」你跑了一趟商场挑衣服，稿只改了一小段。"
+          short: "「挺得体的，看起来重视这次演讲。」",
+          full: "同事：「挺得体的，看起来重视这次演讲。」你花了时间买衣服，稿只改了一小段。"
         },
         2: {
-          short: "「……你是不是有点随意？确定重视这次演讲吗？」",
-          full: "同事（看你一眼）：「……你是不是有点随意？确定重视这次演讲吗？」你多练了两遍，但有人议论你的「态度」。"
+          short: "「……是不是有点随意？确定重视这次演讲吗？」",
+          full: "同事（看你一眼）：「……是不是有点随意？确定重视这次演讲吗？」你多练了两遍，但有人议论你的「态度」。"
         }
       },
       male: {
         1: {
           short: "「嗯，可以。」",
-          full: "同事：「嗯，可以。」你买好了衣服，没有人多说什么。"
+          full: "同事：「嗯，可以。」你买了衣服，没有人多说什么。"
         },
         2: {
-          short: "没有人提起你的穿着。",
-          full: "没有人提起你的穿着。你练完稿，准备度上去了。"
+          short: "没有人提起你的外表。",
+          full: "没有人提起你的外表。你练完稿，准备度上去了。"
         }
       }
     };
 
     var CHOICE_LABEL = {
-      1: "去买一身得体的衣服",
-      2: "不买新衣，把时间用来改稿、排练"
+      1: "买一身像样的衣服",
+      2: "不买新衣服，把时间用来改稿和排练"
     };
 
     var state = {
       step: "intro",
       choice: null,
-      surveyAnswer: null
+      surveyAnswer: null,
+      openText: "",
+      submitStatus: null
     };
 
     var screenEl = document.getElementById("screen");
@@ -512,12 +614,15 @@
         : '收起研究 / Hide the research <span aria-hidden="true">－</span>';
     });
 
-    document.getElementById("scrollToExperience").addEventListener("click", function () {
+    document.getElementById("scrollToExperience").addEventListener("click", scrollToExperience);
+    document.getElementById("heroStart").addEventListener("click", scrollToExperience);
+
+    function scrollToExperience() {
       document.getElementById("experience").scrollIntoView({ behavior: "smooth" });
       if (state.step === "intro") {
         render();
       }
-    });
+    }
 
     function render() {
       switch (state.step) {
@@ -534,8 +639,8 @@
     function renderIntro() {
       screenEl.innerHTML =
         '<p class="step-label">第 1 步 / 共 5 步</p>' +
-        '<p>接下来，你会用<strong>两种身份</strong>各经历一次<strong>完全相同的选择</strong>。</p>' +
-        '<p>系统不会提前告诉你性别——请先读场景、做出选择，再看收到的反馈。</p>' +
+        '<p>接下来，你会用<strong>同一个选择</strong>，分别体验<strong>女生线</strong>和<strong>男生线</strong>。</p>' +
+        '<p>不会提前告诉你哪条是哪条——先读场景、做选择，再看各自收到的评价。</p>' +
         '<div class="choices"><button type="button" class="btn btn-primary" id="btnStart">开始</button></div>';
       document.getElementById("btnStart").onclick = function () {
         state.step = "choose";
@@ -545,14 +650,14 @@
 
     function renderChoose() {
       screenEl.innerHTML =
-        '<p class="step-label">第 2 步 / 共 5 步 · 做出选择</p>' +
+        '<p class="step-label">第 2 步 / 共 5 步 · 做一个选择</p>' +
         '<div class="scenario">' +
         '<p><strong>场景</strong></p>' +
-        '<p>三天后有班级 / 部门公共演讲。今晚你只能做好其中一件事。</p>' +
+        '<p>三天后有班级 / 部门公开演讲。今晚你只能准备一件事。</p>' +
         '</div>' +
         '<div class="choices">' +
-        '<button type="button" class="btn btn-choice" data-choice="1">1 · 去买一身得体的衣服</button>' +
-        '<button type="button" class="btn btn-choice" data-choice="2">2 · 不买新衣，把时间用来改稿、排练</button>' +
+        '<button type="button" class="btn btn-choice" data-choice="1">1 · 买一身像样的衣服</button>' +
+        '<button type="button" class="btn btn-choice" data-choice="2">2 · 不买新衣服，把时间用来改稿和排练</button>' +
         '</div>';
       var buttons = screenEl.querySelectorAll("[data-choice]");
       for (var i = 0; i < buttons.length; i++) {
@@ -567,14 +672,14 @@
     function renderFemale() {
       var fb = FEEDBACK.female[state.choice];
       screenEl.innerHTML =
-        '<p class="step-label">第 2 步 / 共 5 步 · 收到反馈</p>' +
+        '<p class="step-label">第 2 步 · 你收到的反馈（路径一）</p>' +
         '<div class="scenario">' +
         '<p>你选了：<strong>' + state.choice + ' · ' + CHOICE_LABEL[state.choice] + '</strong></p>' +
         '</div>' +
         '<div class="feedback">' +
         '<p>' + fb.full + '</p>' +
         '</div>' +
-        '<div class="choices"><button type="button" class="btn btn-primary" id="btnContinue">继续</button></div>';
+        '<div class="choices"><button type="button" class="btn btn-primary" id="btnContinue">继续，看另一条路径</button></div>';
       document.getElementById("btnContinue").onclick = function () {
         state.step = "male";
         render();
@@ -584,9 +689,9 @@
     function renderMale() {
       var fb = FEEDBACK.male[state.choice];
       screenEl.innerHTML =
-        '<p class="step-label">第 3 步 / 共 5 步 · 同一选择，再看一次</p>' +
+        '<p class="step-label">第 3 步 / 共 5 步 · 同一选择，另一条路径</p>' +
         '<div class="scenario">' +
-        '<p>还是同一道题、同一个选项：<strong>' + state.choice + ' · ' + CHOICE_LABEL[state.choice] + '</strong></p>' +
+        '<p>同一道题、同一选项：<strong>' + state.choice + ' · ' + CHOICE_LABEL[state.choice] + '</strong></p>' +
         '</div>' +
         '<div class="feedback male">' +
         '<p>' + fb.full + '</p>' +
@@ -604,14 +709,14 @@
       screenEl.innerHTML =
         '<p class="step-label">第 4 步 / 共 5 步 · 对照</p>' +
         '<div class="compare-box">' +
-        '<p>你刚才选了：<strong>' + state.choice + ' · ' + CHOICE_LABEL[state.choice] + '</strong></p>' +
-        '<p><strong>第一次收到的评价：</strong>' + f.short + '</p>' +
-        '<p><strong>第二次收到的评价：</strong>' + m.short + '</p>' +
+        '<p>你选了：<strong>' + state.choice + ' · ' + CHOICE_LABEL[state.choice] + '</strong></p>' +
+        '<p><strong>路径一收到的评价：</strong>' + f.short + '</p>' +
+        '<p><strong>路径二收到的评价：</strong>' + m.short + '</p>' +
         '<p style="margin-top:0.75rem;font-weight:600;">同样的选择。不同的反馈。</p>' +
         '</div>' +
-        '<p class="ending-note">差异常常不来自你有没有努力，而来自别人怎么解读你的行为——这不一定是你的错。</p>' +
+        '<p class="ending-note">差别往往不来自你够不够努力，而来自别人怎么解读你的行为——这不一定是你的错。</p>' +
         '<div class="choices" style="margin-top:1rem">' +
-        '<button type="button" class="btn btn-primary" id="btnSurvey">答一道玩后题</button>' +
+        '<button type="button" class="btn btn-primary" id="btnSurvey">答一道玩后题（可选跳过开放题）</button>' +
         '</div>';
       document.getElementById("btnSurvey").onclick = function () {
         state.step = "survey";
@@ -621,7 +726,7 @@
 
     function renderSurvey() {
       screenEl.innerHTML =
-        '<p class="step-label">第 5 步 / 共 5 步 · 玩后反馈（可选）</p>' +
+        '<p class="step-label">第 5 步 / 共 5 步 · 玩后反馈</p>' +
         '<p><strong>两次结果不一样，你的第一反应更接近？</strong></p>' +
         '<div class="survey" id="surveyOptions">' +
         '<label><input type="radio" name="reaction" value="A" /> A · 奇怪 / 不太公平</label>' +
@@ -632,7 +737,7 @@
         '<textarea id="openText" placeholder="写一句即可，也可以留空…"></textarea>' +
         '<div class="choices">' +
         '<button type="button" class="btn btn-primary" id="btnSubmit">提交并完成</button>' +
-        '<button type="button" class="btn btn-secondary" id="btnSkip">跳过开放题，直接完成</button>' +
+        '<button type="button" class="btn btn-secondary" id="btnSkip">跳过开放题并完成</button>' +
         '</div>';
 
       var labels = screenEl.querySelectorAll(".survey label");
@@ -653,13 +758,48 @@
     function finishSurvey() {
       var selected = screenEl.querySelector('input[name="reaction"]:checked');
       if (!selected) {
-        alert("请先选 A、B 或 C，再提交。");
+        alert("请先选择 A、B 或 C。");
         return;
       }
       state.surveyAnswer = selected.value;
       state.openText = document.getElementById("openText").value.trim();
+      state.submitStatus = "pending";
       state.step = "done";
       render();
+
+      submitResearchResponse().then(function (ok) {
+        state.submitStatus = ok ? "success" : "error";
+        if (state.step === "done") {
+          render();
+        }
+      });
+    }
+
+    function submitResearchResponse() {
+      var cfg = window.SUPABASE_CONFIG;
+      if (!cfg || !cfg.url || !cfg.anonKey || cfg.anonKey.indexOf("PASTE_") === 0) {
+        return Promise.resolve(false);
+      }
+
+      return fetch(cfg.url + "/rest/v1/research_responses", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": cfg.anonKey,
+          "Authorization": "Bearer " + cfg.anonKey,
+          "Prefer": "return=minimal"
+        },
+        body: JSON.stringify({
+          choice: state.choice,
+          survey_answer: state.surveyAnswer,
+          open_text: state.openText || null,
+          source: "index_experience"
+        })
+      }).then(function (res) {
+        return res.ok;
+      }).catch(function () {
+        return false;
+      });
     }
 
     function renderDone() {
@@ -670,8 +810,14 @@
       }[state.surveyAnswer] || "";
 
       var extra = state.openText
-        ? '<p>你写的：<em>「' + escapeHtml(state.openText) + '」</em></p>'
+        ? '<p>你写道：<em>\"' + escapeHtml(state.openText) + '\"</em></p>'
         : "";
+
+      var saveNote = {
+        pending: '<p style="font-size:0.9rem;color:#888;">正在保存你的回答…</p>',
+        success: '<p style="font-size:0.9rem;color:#888;">已匿名保存，谢谢参与。</p>',
+        error: '<p style="font-size:0.9rem;color:#b45309;">暂时无法保存到服务器，但你的回答如下。</p>'
+      }[state.submitStatus] || '<p style="font-size:0.9rem;color:#888;">谢谢参与。</p>';
 
       screenEl.innerHTML =
         '<div class="thank-you">' +
@@ -679,10 +825,11 @@
         '<p>你的选择：' + state.choice + ' · ' + CHOICE_LABEL[state.choice] + '</p>' +
         '<p>你的反应：' + reactionText + '</p>' +
         extra +
-        '<p style="font-size:0.9rem;color:#888;">反馈仅保存在本页，不会上传。</p>' +
+        saveNote +
         '</div>' +
         '<div class="choices">' +
-        '<button type="button" class="btn btn-primary" id="btnRestart">再体验一次</button>' +
+        '<button type="button" class="btn btn-primary" id="btnRestart">再玩一次</button>' +
+        '<a class="btn btn-secondary" href="game.html" style="display:block;text-align:center;text-decoration:none;line-height:1.4;padding-top:0.85rem;padding-bottom:0.85rem;">去玩完整版小游戏</a>' +
         '</div>';
 
       document.getElementById("btnRestart").onclick = function () {
@@ -690,6 +837,7 @@
         state.choice = null;
         state.surveyAnswer = null;
         state.openText = "";
+        state.submitStatus = null;
         render();
       };
     }
