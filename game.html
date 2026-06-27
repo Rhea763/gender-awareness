@@ -41,6 +41,63 @@
       margin-bottom: 20px;
     }
 
+    .header-top {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    .guide-toggle {
+      font-family: inherit;
+      font-size: 0.82rem;
+      color: var(--text);
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 99px;
+      padding: 0.4rem 0.95rem;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .guide-toggle:hover {
+      border-color: var(--guide);
+      background: var(--panel2);
+    }
+
+    .guide-panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+
+    .guide-panel.hidden {
+      display: none;
+    }
+
+    .guide-panel h2 {
+      font-size: 0.92rem;
+      color: var(--text);
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .guide-panel ul {
+      padding-left: 1.15rem;
+      margin: 0;
+    }
+
+    .guide-panel li {
+      margin-bottom: 0.45rem;
+    }
+
+    .guide-panel li strong {
+      color: var(--text);
+    }
+
     header h1 {
       font-size: 1.45rem;
       font-weight: 700;
@@ -335,9 +392,22 @@
 <body>
   <div class="wrap">
     <header>
+      <div class="header-top">
+        <button type="button" class="guide-toggle" id="guideToggle" aria-expanded="false" aria-controls="guidePanel">游玩攻略</button>
+      </div>
       <h1>随机身份 · 穿越 Demo</h1>
-      <p>双线穿插 · 行动值 · 规规 · 压力 ≥ 70% 强制休息</p>
     </header>
+
+    <div class="guide-panel hidden" id="guidePanel">
+      <h2>游玩攻略</h2>
+      <p style="margin-bottom: 0.65rem;">本 Demo 核心机制：<strong style="color: var(--text);">双线穿插 · 行动值 · 规规 · 压力 ≥ 70% 强制休息</strong></p>
+      <ul>
+        <li><strong>双线穿插</strong>——女线与男线共享同一个「世界日」；你必须交替完成，才能对照结果。</li>
+        <li><strong>行动值</strong>——每晚分配有限点数（改稿、形象、应酬、休息），看不见隐藏的达标线。</li>
+        <li><strong>规规</strong>——漂浮的向导，会按刻板印象给建议；你可以听，也可以不听。</li>
+        <li><strong>压力 ≥ 70%</strong>——强制进入休息线；恢复会消耗节奏，映射被审视带来的精力损耗。</li>
+      </ul>
+    </div>
 
     <div class="hud" id="hud"></div>
 
@@ -919,6 +989,14 @@
         render();
       });
     }
+
+    document.getElementById("guideToggle").addEventListener("click", function () {
+      var panel = document.getElementById("guidePanel");
+      var open = this.getAttribute("aria-expanded") === "true";
+      this.setAttribute("aria-expanded", String(!open));
+      panel.classList.toggle("hidden", open);
+      this.textContent = open ? "游玩攻略" : "收起攻略";
+    });
 
     render();
   </script>
