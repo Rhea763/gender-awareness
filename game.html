@@ -521,6 +521,41 @@
       outline: none;
       border-color: var(--guide);
     }
+
+    .equality-slider-block {
+      margin-top: 0.75rem;
+      padding-top: 0.85rem;
+      border-top: 1px solid var(--line);
+    }
+
+    .equality-slider-wrap {
+      padding: 0.25rem 0 0.35rem;
+    }
+
+    .equality-slider {
+      width: 100%;
+      accent-color: var(--guide);
+      cursor: pointer;
+      height: 6px;
+    }
+
+    .equality-slider-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: 0.55rem;
+      gap: 0.5rem;
+    }
+
+    .equality-slider-value {
+      font-weight: 600;
+      color: var(--guide);
+      font-size: 1.05rem;
+      min-width: 2.5rem;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
@@ -559,7 +594,7 @@
       <div class="log-box" id="log"></div>
     </div>
 
-    <footer>匿名研究 · 玩前玩后各 5 题 · 可随时退出</footer>
+    <footer>匿名反馈 · 可随时退出</footer>
   </div>
 
   <script src="assets/supabase-config.js"></script>
@@ -586,11 +621,11 @@
     };
 
     const LIKERT_ITEMS = [
-      "如果两个人做出了相同的选择，却因为性别而收到不同的评价，这是不公平的。",
-      "在日常生活中，我能注意到很多行为背后存在「因性别而不同的标准」。",
-      "当别人说「女生应该……」「男生应该……」时，我常常会想：这是谁规定的？",
-      "如果女性或男性在某件事上受到更严厉的批评，这通常说明是他们自己做得不够好。",
-      "看到别人因性别受到区别对待时，我会感到不安或别扭。"
+      "如果两个人做了同样的选择，却得到截然相反的褒贬，我会觉得不太合理。",
+      "把两种截然不同的反馈放在一起对比时，我更容易觉得评价标准其实并不一致。",
+      "当别人用「为你好」的语气告诉你应该怎样时，我有时会怀疑：这真的是唯一合适的选择吗？",
+      "一个人在一件事上受到格外严厉的批评，通常说明是他/她自己做得还不够好。",
+      "看到两种截然不同的评价并排出现时，我会感到别扭或不舒服。"
     ];
 
     const LIKERT_REVERSE_INDEX = 3;
@@ -612,6 +647,8 @@
       genderStudy: null,
       preScores: [null, null, null, null, null],
       postScores: [null, null, null, null, null],
+      pre_equality_score: 50,
+      post_equality_score: 50,
       openText: "",
       submitStatus: null,
       logs: []
@@ -872,6 +909,34 @@
       return html;
     }
 
+    function equalitySliderHtml() {
+      return `<div class="survey-block equality-slider-block">
+        <p class="likert-q"><strong>你认为当前社会性别平等达到了什么程度？</strong></p>
+        <p class="likert-legend" style="margin-bottom:0.65rem">拖动滑块选择 0–100 之间的数值</p>
+        <div class="equality-slider-wrap">
+          <input type="range" class="equality-slider" min="0" max="100" value="50" step="1" />
+          <div class="equality-slider-meta">
+            <span>不平等 · 0</span>
+            <span class="equality-slider-value">50</span>
+            <span>平等 · 100</span>
+          </div>
+        </div>
+      </div>`;
+    }
+
+    function bindEqualitySlider(container, stateKey) {
+      const block = container.querySelector(".equality-slider-block");
+      if (!block) return;
+      const slider = block.querySelector(".equality-slider");
+      const valueEl = block.querySelector(".equality-slider-value");
+      slider.value = state[stateKey];
+      valueEl.textContent = state[stateKey];
+      slider.oninput = function () {
+        state[stateKey] = parseInt(this.value, 10);
+        valueEl.textContent = state[stateKey];
+      };
+    }
+
     function bindLikertScales(container, scoresKey) {
       const scales = container.querySelectorAll(".likert-scale");
       scales.forEach((scale) => {
@@ -951,22 +1016,25 @@
 
     function renderPreSurvey() {
       setStory(
-        `<span class="system">【玩前问卷】</span>\n\n` +
-        `<p class="survey-note">匿名 · 不是心理测试 · 可随时退出。请先凭<strong style="color:var(--text)">开始游戏之前</strong>的真实感受作答。</p>` +
-        `<div class="survey-block"><p><strong>你是否学过性别研究相关课程？</strong></p>` +
+        `<span class="system">【开始前】</span>\n\n` +
+        `<p class="survey-note">匿名 · 可随时退出。请先凭<strong style="color:var(--text)">进入游戏之前</strong>的第一反应作答。</p>` +
+        `<div class="survey-block"><p><strong>你是否在大学里选修过社会学或心理学类课程？</strong></p>` +
         `<div class="survey-options">` +
         `<label><input type="radio" name="genderStudy" value="yes" /> 是</label>` +
         `<label><input type="radio" name="genderStudy" value="no" /> 否</label>` +
         `</div></div>` +
         likertLegendHtml() +
-        `<div class="survey-block">${likertItemsHtml("pre")}</div>`
+        `<div class="survey-block">${likertItemsHtml("pre")}</div>` +
+        equalitySliderHtml()
       );
       setActions(`<div class="choices"><button class="btn-primary" id="btnPreDone">填好了，进入游戏</button></div>`);
-      bindGenderStudy(document.getElementById("story"));
-      bindLikertScales(document.getElementById("story"), "preScores");
+      const storyEl = document.getElementById("story");
+      bindGenderStudy(storyEl);
+      bindLikertScales(storyEl, "preScores");
+      bindEqualitySlider(storyEl, "pre_equality_score");
       bind("btnPreDone", () => {
         if (!state.genderStudy) {
-          alert("请先选择是否学过性别研究相关课程。");
+          alert("请先选择是否选修过相关课程。");
           return;
         }
         if (!validateLikert(state.preScores)) {
@@ -980,10 +1048,11 @@
 
     function renderPostSurvey() {
       setStory(
-        `<span class="system">【玩后问卷】</span>\n\n` +
-        `<p class="survey-note">请再答<strong style="color:var(--text)">与玩前完全相同</strong>的 5 道题。对照刚才的游戏体验，凭<strong style="color:var(--text)">现在</strong>的感受打分。</p>` +
+        `<span class="system">【结束后】</span>\n\n` +
+        `<p class="survey-note">请再答<strong style="color:var(--text)">与开始前完全相同</strong>的题目（含下方滑动条）。对照刚才的体验，凭<strong style="color:var(--text)">现在</strong>的感受打分。</p>` +
         likertLegendHtml() +
         `<div class="survey-block">${likertItemsHtml("post")}</div>` +
+        equalitySliderHtml() +
         `<p style="margin-top:1rem;"><strong>这让你想到生活中的什么？</strong>（可跳过）</p>` +
         `<textarea class="survey-open" id="openText" placeholder="写一句即可，也可以留空…"></textarea>`
       );
@@ -994,6 +1063,7 @@
         </div>
       `);
       bindLikertScales(document.getElementById("story"), "postScores");
+      bindEqualitySlider(document.getElementById("story"), "post_equality_score");
       bind("btnSubmitSurvey", finishPostSurvey);
       bind("btnSkipOpen", finishPostSurvey);
     }
@@ -1043,6 +1113,8 @@
           post_q3: state.postScores[2],
           post_q4: state.postScores[3],
           post_q5: state.postScores[4],
+          pre_equality_score: state.pre_equality_score,
+          post_equality_score: state.post_equality_score,
           open_text: state.openText || null,
           guide_meter_end: state.guideMeter,
           autonomy_count: state.autonomy,
@@ -1066,9 +1138,8 @@
 
       setStory(
         `<span class="system">【完成】</span>\n\n` +
-        `谢谢参与本次研究与游戏体验。\n\n` +
-        `5 题平均变化（第 4 题已反向计分）：<strong style="color:var(--guide)">${averageDelta()}</strong> 分\n\n` +
-        `规规横条：${state.guideMeter} · 自主次数：${state.autonomy}` +
+        `谢谢参与。\n\n` +
+        `你的反馈已记录。` +
         extra +
         saveNote
       );
@@ -1094,6 +1165,8 @@
         genderStudy: null,
         preScores: [null, null, null, null, null],
         postScores: [null, null, null, null, null],
+        pre_equality_score: 50,
+        post_equality_score: 50,
         openText: "",
         submitStatus: null,
         logs: []
@@ -1430,7 +1503,7 @@
         ? "我不是坏，只是被教成这样。谢谢你教我第二种可能。"
         : "……下次，也许我会少说一句「应该」。");
 
-      setActions(`<div class="choices"><button class="btn-primary" id="toPostSurvey">继续，填玩后问卷</button></div>`);
+      setActions(`<div class="choices"><button class="btn-primary" id="toPostSurvey">继续，填简短反馈</button></div>`);
       bind("toPostSurvey", () => {
         state.screen = "postSurvey";
         render();
