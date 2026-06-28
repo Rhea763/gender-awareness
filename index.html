@@ -876,7 +876,7 @@
         '<p class="step-label">第 1 步 / 共 7 步 · 开始前</p>' +
         '<p class="screen-note">没有标准答案。请先凭<strong>体验之前</strong>的第一反应作答。</p>' +
         '<div class="likert-block">' +
-        "<p><strong>你是否在大学里选修过社会学或心理学类课程？</strong></p>" +
+        "<p><strong>你是否学过性别研究相关课程？</strong></p>" +
         '<div class="survey" id="genderStudyOptions">' +
         '<label><input type="radio" name="genderStudy" value="yes" /> 是</label>' +
         '<label><input type="radio" name="genderStudy" value="no" /> 否</label>' +
@@ -890,7 +890,7 @@
       bindEqualitySlider(screenEl, "pre_equality_score");
       document.getElementById("btnPreDone").onclick = function () {
         if (!state.genderStudy) {
-          alert("请先选择是否选修过相关课程。");
+          alert("请先选择是否学过性别研究相关课程。");
           return;
         }
         if (!validateLikert(state.preScores)) {

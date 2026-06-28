@@ -1018,7 +1018,7 @@
       setStory(
         `<span class="system">【开始前】</span>\n\n` +
         `<p class="survey-note">匿名 · 可随时退出。请先凭<strong style="color:var(--text)">进入游戏之前</strong>的第一反应作答。</p>` +
-        `<div class="survey-block"><p><strong>你是否在大学里选修过社会学或心理学类课程？</strong></p>` +
+        `<div class="survey-block"><p><strong>你是否学过性别研究相关课程？</strong></p>` +
         `<div class="survey-options">` +
         `<label><input type="radio" name="genderStudy" value="yes" /> 是</label>` +
         `<label><input type="radio" name="genderStudy" value="no" /> 否</label>` +
@@ -1034,7 +1034,7 @@
       bindEqualitySlider(storyEl, "pre_equality_score");
       bind("btnPreDone", () => {
         if (!state.genderStudy) {
-          alert("请先选择是否选修过相关课程。");
+          alert("请先选择是否学过性别研究相关课程。");
           return;
         }
         if (!validateLikert(state.preScores)) {
