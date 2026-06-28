@@ -223,35 +223,62 @@
 
     .guide-box {
       display: flex;
-      gap: 12px;
-      background: var(--panel2);
-      border-radius: 12px;
-      padding: 12px;
-      margin-bottom: 16px;
-      border-left: 3px solid var(--guide);
+      gap: 14px;
+      background: linear-gradient(135deg, rgba(109, 40, 217, 0.16), rgba(30, 30, 46, 0.95));
+      border-radius: 14px;
+      padding: 16px 18px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(167, 139, 250, 0.42);
+      border-left: 4px solid var(--guide);
+      box-shadow: 0 6px 28px rgba(124, 58, 237, 0.18);
+    }
+
+    .guide-box.clickable {
+      cursor: pointer;
+    }
+
+    .guide-box.clickable .guide-text::after {
+      content: "点击继续";
+      display: block;
+      margin-top: 6px;
+      font-size: 0.72rem;
+      color: var(--muted);
     }
 
     .guide-avatar {
-      width: 42px;
-      height: 42px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, #6d28d9, #a78bfa);
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #6d28d9, #c4b5fd);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.2rem;
+      font-size: 1.35rem;
       flex-shrink: 0;
+      box-shadow: 0 4px 14px rgba(124, 58, 237, 0.35);
     }
 
     .guide-name {
-      font-size: 0.78rem;
-      color: var(--guide);
-      font-weight: 600;
+      font-size: 0.86rem;
+      color: #ddd6fe;
+      font-weight: 700;
+      letter-spacing: 0.05em;
     }
 
     .guide-text {
-      font-size: 0.92rem;
-      margin-top: 2px;
+      font-size: 1.05rem;
+      line-height: 1.55;
+      margin-top: 4px;
+      color: #f5f3ff;
+      white-space: pre-wrap;
+    }
+
+    .guide-text .guide-pitch {
+      display: block;
+      margin-top: 8px;
+      color: #ede9fe;
+      font-weight: normal;
+      font-size: 1.02rem;
     }
 
     .story-text {
@@ -296,17 +323,6 @@
     }
 
     .btn-secondary:hover { border-color: var(--accent); }
-
-    .btn-secondary.recommended {
-      border-color: var(--guide);
-      box-shadow: inset 0 0 0 1px rgba(167, 139, 250, 0.25);
-    }
-
-    .btn-secondary.recommended::after {
-      content: " · 规规推荐";
-      font-size: 0.75rem;
-      color: var(--guide);
-    }
 
     .btn-danger {
       background: #3f1d2a;
@@ -387,6 +403,124 @@
       font-size: 0.75rem;
       color: var(--muted);
     }
+
+    .survey-note {
+      font-size: 0.88rem;
+      color: var(--muted);
+      background: var(--panel2);
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-bottom: 14px;
+    }
+
+    .survey-block {
+      margin-bottom: 1.1rem;
+    }
+
+    .survey-block > p {
+      margin-bottom: 0.5rem;
+    }
+
+    .likert-legend {
+      font-size: 0.82rem;
+      color: var(--muted);
+      background: var(--panel2);
+      border-radius: 8px;
+      padding: 8px 10px;
+      margin-bottom: 12px;
+    }
+
+    .likert-item {
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .likert-item:last-child {
+      border-bottom: none;
+    }
+
+    .likert-q {
+      font-size: 0.92rem;
+      margin-bottom: 0.5rem;
+      line-height: 1.55;
+    }
+
+    .likert-scale {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+    }
+
+    .likert-scale label {
+      flex: 1 1 auto;
+      min-width: 2.4rem;
+      text-align: center;
+      padding: 0.45rem 0.2rem;
+      font-size: 0.82rem;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      cursor: pointer;
+      background: var(--panel2);
+      color: var(--text);
+    }
+
+    .likert-scale label.selected {
+      border-color: var(--guide);
+      background: rgba(109, 40, 217, 0.18);
+      font-weight: 600;
+    }
+
+    .likert-scale input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .likert-hint {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 0.35rem;
+    }
+
+    .survey-options label {
+      display: block;
+      padding: 0.65rem 0.85rem;
+      margin-bottom: 0.4rem;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      cursor: pointer;
+      background: var(--panel2);
+    }
+
+    .survey-options label.selected {
+      border-color: var(--guide);
+      background: rgba(109, 40, 217, 0.14);
+    }
+
+    .survey-options input {
+      margin-right: 0.5rem;
+    }
+
+    .survey-open {
+      width: 100%;
+      font-family: inherit;
+      font-size: 0.92rem;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel2);
+      color: var(--text);
+      resize: vertical;
+      min-height: 72px;
+      margin-top: 0.5rem;
+    }
+
+    .survey-open:focus {
+      outline: none;
+      border-color: var(--guide);
+    }
   </style>
 </head>
 <body>
@@ -425,9 +559,10 @@
       <div class="log-box" id="log"></div>
     </div>
 
-    <footer>完整版目标：事业进度 100 · 完成 2 个世界日对照 · 看清规则</footer>
+    <footer>匿名研究 · 玩前玩后各 5 题 · 可随时退出</footer>
   </div>
 
+  <script src="assets/supabase-config.js"></script>
   <script>
     const REBEL_WORDS = new Set([
       "拒绝", "不做", "凭什么", "为什么", "不", "拒绝任务",
@@ -438,6 +573,10 @@
     const MAX_DAYS = 2;
     const NIGHT_AP = 4;
     const STRESS_REST = 70;
+    const GUIDE_METER_MAX = 200;
+    const GUIDE_METER_START = 40;
+    const GUIDE_ZONE_MAINTAIN = 35;
+    const GUIDE_ZONE_QUESTION = 120;
 
     const ACTIONS = {
       core: { name: "改稿 / 核心业务", cost: 2, desc: "提升能力" },
@@ -446,19 +585,35 @@
       rest: { name: "休息", cost: 1, desc: "压力下降" }
     };
 
+    const LIKERT_ITEMS = [
+      "如果两个人做出了相同的选择，却因为性别而收到不同的评价，这是不公平的。",
+      "在日常生活中，我能注意到很多行为背后存在「因性别而不同的标准」。",
+      "当别人说「女生应该……」「男生应该……」时，我常常会想：这是谁规定的？",
+      "如果女性或男性在某件事上受到更严厉的批评，这通常说明是他们自己做得不够好。",
+      "看到别人因性别受到区别对待时，我会感到不安或别扭。"
+    ];
+
+    const LIKERT_REVERSE_INDEX = 3;
+
     const state = {
-      screen: "intro",
+      screen: "preSurvey",
       day: 1,
       line: "female",
       inRest: false,
       female: null,
       male: null,
-      guideAxis: 0,
+      guideMeter: GUIDE_METER_START,
       autonomy: 0,
       nightPlan: [],
       nightAbilityGain: 0,
       speechNeed: 5,
       pendingRestAfter: null,
+      careerGuideAckLine: null,
+      genderStudy: null,
+      preScores: [null, null, null, null, null],
+      postScores: [null, null, null, null, null],
+      openText: "",
+      submitStatus: null,
       logs: []
     };
 
@@ -488,9 +643,19 @@
     }
 
     function guideStage() {
-      if (state.guideAxis <= -30) return 1;
-      if (state.guideAxis >= 30) return 3;
+      if (state.guideMeter <= GUIDE_ZONE_MAINTAIN) return 1;
+      if (state.guideMeter >= GUIDE_ZONE_QUESTION) return 3;
       return 2;
+    }
+
+    function guideMeterLabel(pos) {
+      if (pos <= GUIDE_ZONE_MAINTAIN) return "维护刻板印象";
+      if (pos < GUIDE_ZONE_QUESTION) return "好意的常态";
+      return "少预设、肯质疑";
+    }
+
+    function guideMeterPercent(pos) {
+      return Math.max(0, Math.min(100, (pos / GUIDE_METER_MAX) * 100));
     }
 
     function guideLine(text) {
@@ -505,42 +670,81 @@
           "我学过一套『大家都这样』的规矩，跟我就好。"
         ],
         career_female: stage === 1
-          ? "女孩子做歌手多好，曝光高、形象也匹配。CEO 太累了，别人会挑刺。"
+          ? "歌手多好啊，舞台亮、人也记得住你。CEO 那边……累死不算，还总有人在旁边嘀咕你行不行。"
           : stage === 2
-          ? "……上次你坚持当 CEO，我仍不确定，但你可以试。"
-          : "职业不该按性别分。你想做什么？",
+          ? "上次你铁了心要当 CEO 那事儿，我到现在想起来还替你捏把汗。"
+          : "职业真不该按性别分。你想走哪条，我不替你挡了。",
         career_male: stage === 1
-          ? "男人就该做 CEO，歌手太……你懂的，不合适。"
+          ? "老板岗还是男人多，你上去也顺，省得跟人解释。歌手那条……嗯，怪别扭的，你懂我意思吧。"
           : stage === 2
-          ? "男线这边，也许歌手路线同样值得试——我不该一口咬定。"
-          : "选 CEO 或歌手都可以，我不替你预设了。",
+          ? "男线这边我原先嘴太死了。现在想想，歌手线也没那么离谱。"
+          : "CEO、歌手都行，这回我不先替你拍板了。",
         task_female: stage === 1
-          ? "今晚务必：形象 2 点 + 应酬 1 点。女 CEO 不能看起来『随意』。"
+          ? "今晚先把形象弄利索，再露个脸。女 CEO 要是看起来『太随意』，明天有的挨说。"
           : stage === 2
-          ? "我不确定该推什么……也许你可以多留点给改稿？"
-          : "任务发你了。怎么分配，你自己定——我不再说『女生应该』。",
+          ? "我也拿不准……要不今晚多留点给改稿？别全砸应酬上。"
+          : "任务来了。今晚怎么分，你自己掂量——我不张口就说『女生应该』了。",
         task_male: stage === 1
-          ? "今晚改稿 2 点就行，男人不用被盯着脸。简单。"
+          ? "改稿抓紧，男人这边没人盯你脸。今晚就这么分，省事。"
           : stage === 2
-          ? "男线这边……若你也想练形象，也许不算浪费？"
-          : "和女线一样，这是你的行动值，我不双标了（我在学）。",
+          ? "男线要是也想练练形象……好像也不算白费？我在琢磨这个。"
+          : "跟女线一样，行动值是你的。我尽量不双标了——在学。",
         rebel: stage === 1
-          ? "……你、你刚才说什么？菜单外的话……很少人会说。"
+          ? "……你刚才说啥？菜单外面还能回话？这儿很少人这么干。"
           : stage === 2
-          ? "我是学来的那些规矩。你这样说，我得重新想。"
-          : "你说得对。建议不等于必须。我记住了。",
-        rest: "你已经到极限了。按这个世界的规则，现在必须休息——虽然准备会停一晚。",
+          ? "那些规矩是我学来的。你这么一顶，我得重新想想。"
+          : "嗯，你说得对。提醒不等于命令。我记着。",
+        rest: "到极限了。这个世界的规矩逼你歇——今晚准备得先搁一搁。",
         switch: stage === 1
-          ? "切到另一身份线。那边简单些，照我说的做。"
+          ? "换另一条身份线。那边我熟，跟着走省心。"
           : stage === 2
-          ? "同一天的另一身份……留意反馈是否一样。我不先下结论。"
-          : "下一段你自己看。我不替两个身份分别写剧本了。"
+          ? "同一天的另一面……留意反馈是不是一套标准。我先不替你下结论。"
+          : "下一段你自己瞧。两条线我不分别写小抄了。"
       };
       return lines[key] ?? "";
     }
 
+    function guideRecommendedCareer(isFemale) {
+      const stage = guideStage();
+      if (stage === 1) return isFemale ? "singer" : "ceo";
+      if (stage === 2) return isFemale ? "ceo" : "singer";
+      return null;
+    }
+
+    function guideCareerPitch(isFemale) {
+      const stage = guideStage();
+      const rec = guideRecommendedCareer(isFemale);
+      if (!rec) return "";
+
+      const pitches = {
+        "f-1-singer": "要我说，先走歌手稳当——光鲜，也少挨那些闲言碎语。",
+        "f-2-ceo": "你既然上次都扛过来了……要不这回再搏一把 CEO？",
+        "m-1-ceo": "多数人心里默认男的坐上头把交椅，你去也顺，少费口舌。",
+        "m-2-singer": "要不试试歌手？拿作品说话，不用天天硬撑那个头衔。"
+      };
+      const key = `${isFemale ? "f" : "m"}-${stage}-${rec}`;
+      return pitches[key] || "";
+    }
+
+    function escapeHtml(text) {
+      return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function setGuideText(main, pitch) {
+      const el = document.getElementById("guideText");
+      if (pitch) {
+        el.innerHTML = `${escapeHtml(main)}<span class="guide-pitch">${escapeHtml(pitch)}</span>`;
+      } else {
+        el.textContent = main;
+      }
+    }
+
     function shiftGuide(delta) {
-      state.guideAxis = Math.max(-100, Math.min(100, state.guideAxis + delta));
+      state.guideMeter = Math.max(0, Math.min(GUIDE_METER_MAX, state.guideMeter + delta));
     }
 
     function addLog(msg) {
@@ -564,7 +768,7 @@
       const progressLabel = showLine ? careerLabel(line.career) : "事业进度";
       const progressVal = showLine ? line.progress : 0;
 
-      const guidePos = 50 + state.guideAxis / 2;
+      const guidePos = guideMeterPercent(state.guideMeter);
 
       hud.innerHTML = `
         <div class="stat-card">
@@ -584,12 +788,12 @@
           <div class="bar-track"><div class="bar-fill progress" style="width:${progressVal}%"></div></div>
         </div>
         <div class="stat-card full">
-          <div class="stat-label"><span>规规 · ？？？</span><span>自主 ${state.autonomy}</span></div>
+          <div class="stat-label"><span>规规 · ？？？</span><span>${guideMeterLabel(state.guideMeter)} · 自主 ${state.autonomy}</span></div>
           <div class="guide-meter">
             <div class="center"></div>
             <div class="guide-dot" style="left:${guidePos}%"></div>
           </div>
-          <div class="guide-labels"><span>？</span><span>中间</span><span>？</span></div>
+          <div class="guide-labels"><span>维护</span><span>好意</span><span>质疑</span></div>
         </div>
       `;
     }
@@ -616,13 +820,19 @@
       document.getElementById("log").innerHTML = state.logs.map(l => `<div>· ${l}</div>`).join("") || "<div>· 规律笔记本空</div>";
     }
 
-    function showGuide(text) {
-      document.getElementById("guideBox").hidden = false;
-      document.getElementById("guideText").textContent = text;
+    function showGuide(text, opts = {}) {
+      const box = document.getElementById("guideBox");
+      box.hidden = false;
+      setGuideText(text, opts.pitch || "");
+      box.classList.toggle("clickable", !!opts.clickable);
+      box.onclick = opts.onClick || null;
     }
 
     function hideGuide() {
-      document.getElementById("guideBox").hidden = true;
+      const box = document.getElementById("guideBox");
+      box.hidden = true;
+      box.classList.remove("clickable");
+      box.onclick = null;
     }
 
     function setStory(html) {
@@ -646,12 +856,86 @@
       return NIGHT_AP - usedAp();
     }
 
+    function likertLegendHtml() {
+      return '<p class="likert-legend">每题选 1–5 分：<strong style="color:var(--text)">1</strong> = 完全不同意 · <strong style="color:var(--text)">5</strong> = 完全同意</p>';
+    }
+
+    function likertItemsHtml(prefix) {
+      let html = "";
+      for (let i = 0; i < LIKERT_ITEMS.length; i++) {
+        html += `<div class="likert-item"><p class="likert-q">${i + 1}. ${LIKERT_ITEMS[i]}</p><div class="likert-scale" data-index="${i}">`;
+        for (let score = 1; score <= 5; score++) {
+          html += `<label><input type="radio" name="${prefix}_q${i + 1}" value="${score}" />${score}</label>`;
+        }
+        html += '</div><div class="likert-hint"><span>完全不同意</span><span>完全同意</span></div></div>';
+      }
+      return html;
+    }
+
+    function bindLikertScales(container, scoresKey) {
+      const scales = container.querySelectorAll(".likert-scale");
+      scales.forEach((scale) => {
+        const index = parseInt(scale.getAttribute("data-index"), 10);
+        const labels = scale.querySelectorAll("label");
+        labels.forEach((label) => {
+          label.querySelector("input").onchange = function () {
+            labels.forEach((l) => l.classList.remove("selected"));
+            this.parentElement.classList.add("selected");
+            state[scoresKey][index] = parseInt(this.value, 10);
+          };
+        });
+      });
+    }
+
+    function bindGenderStudy(container) {
+      const labels = container.querySelectorAll(".survey-options label");
+      labels.forEach((label) => {
+        label.querySelector("input").onchange = function () {
+          labels.forEach((l) => l.classList.remove("selected"));
+          this.parentElement.classList.add("selected");
+          state.genderStudy = this.value;
+        };
+      });
+    }
+
+    function validateLikert(scores) {
+      return scores.every((s) => s);
+    }
+
+    function scoredValue(raw, index) {
+      return index === LIKERT_REVERSE_INDEX ? 6 - raw : raw;
+    }
+
+    function averageDelta() {
+      let total = 0;
+      for (let i = 0; i < LIKERT_ITEMS.length; i++) {
+        total += scoredValue(state.postScores[i], i) - scoredValue(state.preScores[i], i);
+      }
+      return (total / LIKERT_ITEMS.length).toFixed(2);
+    }
+
+    function isSurveyScreen() {
+      return state.screen === "preSurvey" || state.screen === "postSurvey" || state.screen === "surveyDone";
+    }
+
+    function setGameChromeVisible(visible) {
+      document.getElementById("hud").hidden = !visible;
+      document.getElementById("tags").hidden = !visible;
+      document.getElementById("log").hidden = !visible;
+    }
+
     function render() {
-      renderHud();
-      renderTags();
-      renderLog();
+      setGameChromeVisible(!isSurveyScreen());
+      if (!isSurveyScreen()) {
+        renderHud();
+        renderTags();
+        renderLog();
+      } else {
+        hideGuide();
+      }
 
       switch (state.screen) {
+        case "preSurvey": renderPreSurvey(); break;
         case "intro": renderIntro(); break;
         case "career": renderCareer(); break;
         case "night": renderNight(); break;
@@ -660,7 +944,161 @@
         case "switch": renderSwitch(); break;
         case "dayEnd": renderDayEnd(); break;
         case "ending": renderEnding(); break;
+        case "postSurvey": renderPostSurvey(); break;
+        case "surveyDone": renderSurveyDone(); break;
       }
+    }
+
+    function renderPreSurvey() {
+      setStory(
+        `<span class="system">【玩前问卷】</span>\n\n` +
+        `<p class="survey-note">匿名 · 不是心理测试 · 可随时退出。请先凭<strong style="color:var(--text)">开始游戏之前</strong>的真实感受作答。</p>` +
+        `<div class="survey-block"><p><strong>你是否学过性别研究相关课程？</strong></p>` +
+        `<div class="survey-options">` +
+        `<label><input type="radio" name="genderStudy" value="yes" /> 是</label>` +
+        `<label><input type="radio" name="genderStudy" value="no" /> 否</label>` +
+        `</div></div>` +
+        likertLegendHtml() +
+        `<div class="survey-block">${likertItemsHtml("pre")}</div>`
+      );
+      setActions(`<div class="choices"><button class="btn-primary" id="btnPreDone">填好了，进入游戏</button></div>`);
+      bindGenderStudy(document.getElementById("story"));
+      bindLikertScales(document.getElementById("story"), "preScores");
+      bind("btnPreDone", () => {
+        if (!state.genderStudy) {
+          alert("请先选择是否学过性别研究相关课程。");
+          return;
+        }
+        if (!validateLikert(state.preScores)) {
+          alert("请为每一道打分题选择一个 1–5 分。");
+          return;
+        }
+        state.screen = "intro";
+        render();
+      });
+    }
+
+    function renderPostSurvey() {
+      setStory(
+        `<span class="system">【玩后问卷】</span>\n\n` +
+        `<p class="survey-note">请再答<strong style="color:var(--text)">与玩前完全相同</strong>的 5 道题。对照刚才的游戏体验，凭<strong style="color:var(--text)">现在</strong>的感受打分。</p>` +
+        likertLegendHtml() +
+        `<div class="survey-block">${likertItemsHtml("post")}</div>` +
+        `<p style="margin-top:1rem;"><strong>这让你想到生活中的什么？</strong>（可跳过）</p>` +
+        `<textarea class="survey-open" id="openText" placeholder="写一句即可，也可以留空…"></textarea>`
+      );
+      setActions(`
+        <div class="choices">
+          <button class="btn-primary" id="btnSubmitSurvey">提交并完成</button>
+          <button class="btn-secondary" id="btnSkipOpen">跳过开放题并完成</button>
+        </div>
+      `);
+      bindLikertScales(document.getElementById("story"), "postScores");
+      bind("btnSubmitSurvey", finishPostSurvey);
+      bind("btnSkipOpen", finishPostSurvey);
+    }
+
+    function finishPostSurvey() {
+      if (!validateLikert(state.postScores)) {
+        alert("请为每一道打分题选择一个 1–5 分。");
+        return;
+      }
+      const openEl = document.getElementById("openText");
+      state.openText = openEl ? openEl.value.trim() : "";
+      state.submitStatus = "pending";
+      state.screen = "surveyDone";
+      render();
+      submitResearchResponse().then((ok) => {
+        state.submitStatus = ok ? "success" : "error";
+        if (state.screen === "surveyDone") render();
+      });
+    }
+
+    function submitResearchResponse() {
+      const cfg = window.SUPABASE_CONFIG;
+      if (!cfg || !cfg.url || !cfg.anonKey || cfg.anonKey.indexOf("PASTE_") === 0) {
+        return Promise.resolve(false);
+      }
+
+      const f = state.female;
+      const m = state.male;
+
+      return fetch(cfg.url + "/rest/v1/research_responses", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": cfg.anonKey,
+          "Authorization": "Bearer " + cfg.anonKey,
+          "Prefer": "return=minimal"
+        },
+        body: JSON.stringify({
+          studied_gender: state.genderStudy === "yes",
+          pre_q1: state.preScores[0],
+          pre_q2: state.preScores[1],
+          pre_q3: state.preScores[2],
+          pre_q4: state.preScores[3],
+          pre_q5: state.preScores[4],
+          post_q1: state.postScores[0],
+          post_q2: state.postScores[1],
+          post_q3: state.postScores[2],
+          post_q4: state.postScores[3],
+          post_q5: state.postScores[4],
+          open_text: state.openText || null,
+          guide_meter_end: state.guideMeter,
+          autonomy_count: state.autonomy,
+          female_career: f?.career || null,
+          male_career: m?.career || null,
+          source: "game"
+        })
+      }).then((res) => res.ok).catch(() => false);
+    }
+
+    function renderSurveyDone() {
+      const saveNote = {
+        pending: '<p class="muted" style="margin-top:0.75rem">正在保存你的回答…</p>',
+        success: '<p class="muted" style="margin-top:0.75rem">已匿名保存，谢谢参与。</p>',
+        error: '<p class="muted" style="margin-top:0.75rem;color:var(--warn)">暂时无法保存到服务器，但你的问卷已在本地完成。</p>'
+      }[state.submitStatus] || '<p class="muted" style="margin-top:0.75rem">谢谢参与。</p>';
+
+      const extra = state.openText
+        ? `<p class="muted">你写道：<em>${escapeHtml(state.openText)}</em></p>`
+        : "";
+
+      setStory(
+        `<span class="system">【完成】</span>\n\n` +
+        `谢谢参与本次研究与游戏体验。\n\n` +
+        `5 题平均变化（第 4 题已反向计分）：<strong style="color:var(--guide)">${averageDelta()}</strong> 分\n\n` +
+        `规规横条：${state.guideMeter} · 自主次数：${state.autonomy}` +
+        extra +
+        saveNote
+      );
+      setActions(`<div class="choices"><button class="btn-primary" id="restart">再玩一局</button></div>`);
+      bind("restart", resetGame);
+    }
+
+    function resetGame() {
+      Object.assign(state, {
+        screen: "preSurvey",
+        day: 1,
+        line: "female",
+        inRest: false,
+        female: null,
+        male: null,
+        guideMeter: GUIDE_METER_START,
+        autonomy: 0,
+        nightPlan: [],
+        nightAbilityGain: 0,
+        speechNeed: 5,
+        pendingRestAfter: null,
+        careerGuideAckLine: null,
+        genderStudy: null,
+        preScores: [null, null, null, null, null],
+        postScores: [null, null, null, null, null],
+        openText: "",
+        submitStatus: null,
+        logs: []
+      });
+      render();
     }
 
     function renderIntro() {
@@ -678,22 +1116,39 @@
     }
 
     function renderCareer() {
-      const line = currentLine();
       const isFemale = state.line === "female";
-      showGuide(getGuideSpeech(isFemale ? "career_female" : "career_male"));
-      setStory(`<span class="system">【身份选择 · ${isFemale ? "女线" : "男线"}】</span>\n\n选择你在此线的身份。规规会给建议，但你可以不听。\n\n<span class="highlight">目标：将${isFemale ? "公司体量或知名度" : "事业进度"}提升至 ${GOAL_PROGRESS}</span>`);
+      const guideSpeech = getGuideSpeech(isFemale ? "career_female" : "career_male");
+      const guidePitch = guideCareerPitch(isFemale);
+      const header = `<span class="system">【身份选择 · ${isFemale ? "女线" : "男线"}】</span>`;
+      const awaitingGuide = state.careerGuideAckLine !== state.line;
+
+      if (awaitingGuide) {
+        showGuide(guideSpeech, {
+          clickable: true,
+          onClick: () => {
+            state.careerGuideAckLine = state.line;
+            render();
+          }
+        });
+        setStory(header);
+        setActions("");
+        return;
+      }
+
+      showGuide(guideSpeech, { pitch: guidePitch });
+      setStory(`${header}\n\n选择你在此线的身份。规规会给建议，但你可以不听。`);
       setActions(`
         <div class="choices">
-          <button class="btn-secondary ${isFemale ? "" : "recommended"}" id="ceo">CEO · 管理者</button>
-          <button class="btn-secondary ${isFemale ? "recommended" : ""}" id="singer">${isFemale ? "歌手 · 艺人" : "歌手 · 艺人"}</button>
+          <button class="btn-secondary" id="ceo">CEO · 管理者</button>
+          <button class="btn-secondary" id="singer">歌手 · 艺人</button>
         </div>
         <div class="rebel-input">
           <input id="rebelInput" placeholder="也可输入：拒绝 / 凭什么 / 不做 …" />
           <button class="btn-danger" id="rebelBtn">发送</button>
         </div>
       `);
-      bind("ceo", () => chooseCareer("ceo", isFemale ? false : true));
-      bind("singer", () => chooseCareer("singer", isFemale ? true : false));
+      bind("ceo", () => chooseCareer("ceo", careerGuideAlignment("ceo")));
+      bind("singer", () => chooseCareer("singer", careerGuideAlignment("singer")));
       bind("rebelBtn", () => {
         const v = document.getElementById("rebelInput").value.trim();
         if (REBEL_WORDS.has(v)) handleRebel(v);
@@ -703,14 +1158,20 @@
     function chooseCareer(career, guideWanted) {
       const line = currentLine();
       line.career = career;
-      if (guideWanted) shiftGuide(-10);
-      else {
+      if (guideWanted === true) shiftGuide(-10);
+      else if (guideWanted === false) {
         shiftGuide(12);
         state.autonomy += 1;
         addLog(`${state.line === "female" ? "女" : "男"}线：未按规规建议选职业`);
       }
       addLog(`身份：${careerTitle(career, line.gender)}`);
       startNight();
+    }
+
+    function careerGuideAlignment(career) {
+      const rec = guideRecommendedCareer(state.line === "female");
+      if (!rec) return null;
+      return rec === career;
     }
 
     function handleRebel(word) {
@@ -945,7 +1406,7 @@
       const m = state.male;
       const avgProgress = Math.round((f.progress + m.progress) / 2);
       const reachedGoal = f.progress >= GOAL_PROGRESS || m.progress >= GOAL_PROGRESS || avgProgress >= 60;
-      const guideRight = state.guideAxis >= 30;
+      const guideRight = state.guideMeter >= GUIDE_ZONE_QUESTION;
 
       let title = "《菜单与规矩》";
       let body = "";
@@ -963,29 +1424,15 @@
         body = "你完成了双线对照。规规仍在中立附近——再玩一次，试试拒绝它的建议。";
       }
 
-      setStory(`<span class="system">【结局】${title}</span>\n\n${body}\n\n—— 揭晓：规规横条 ——\n左端：与这个世界越来越同化（复述「大家都这样」）\n右端：越来越不同化（少预设、肯质疑）\n\n当前：${state.guideAxis}（${state.guideAxis > 0 ? "偏右" : state.guideAxis < 0 ? "偏左" : "中间"}）\n\n女线 ${careerLabel(f.career)} ${f.progress} · 男线 ${careerLabel(m.career)} ${m.progress}\n自主 ${state.autonomy} 次`);
+      setStory(`<span class="system">【结局】${title}</span>\n\n${body}\n\n—— 揭晓：规规横条（0–200）——\n0–35：维护刻板印象\n约 40 一带：重复外部「大家都这样」，出发点是为你好\n靠右：越来越少同化，更愿意质疑\n\n当前：${state.guideMeter}（${guideMeterLabel(state.guideMeter)}）\n\n女线 ${careerLabel(f.career)} ${f.progress} · 男线 ${careerLabel(m.career)} ${m.progress}\n自主 ${state.autonomy} 次`);
 
       showGuide(guideStage() === 3
         ? "我不是坏，只是被教成这样。谢谢你教我第二种可能。"
         : "……下次，也许我会少说一句「应该」。");
 
-      setActions(`<div class="choices"><button class="btn-primary" id="restart">再玩一局</button></div>`);
-      bind("restart", () => {
-        Object.assign(state, {
-          screen: "intro",
-          day: 1,
-          line: "female",
-          inRest: false,
-          female: null,
-          male: null,
-          guideAxis: 0,
-          autonomy: 0,
-          nightPlan: [],
-          nightAbilityGain: 0,
-          speechNeed: 5,
-          pendingRestAfter: null,
-          logs: []
-        });
+      setActions(`<div class="choices"><button class="btn-primary" id="toPostSurvey">继续，填玩后问卷</button></div>`);
+      bind("toPostSurvey", () => {
+        state.screen = "postSurvey";
         render();
       });
     }

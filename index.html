@@ -368,6 +368,79 @@
       background: #f9f9f9;
     }
 
+    .likert-block {
+      margin-bottom: 1.35rem;
+    }
+
+    .likert-block > p,
+    .likert-item > p.likert-q {
+      font-size: 0.95rem;
+      margin-bottom: 0.55rem;
+      line-height: 1.55;
+    }
+
+    .likert-legend {
+      font-size: 0.82rem;
+      color: #666;
+      background: #f7f7f7;
+      border-radius: 8px;
+      padding: 0.55rem 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .likert-item {
+      padding: 0.85rem 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .likert-item:last-child {
+      border-bottom: none;
+    }
+
+    .likert-scale {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+    }
+
+    .likert-scale label {
+      flex: 1 1 auto;
+      min-width: 2.6rem;
+      text-align: center;
+      padding: 0.45rem 0.25rem;
+      margin: 0;
+      font-size: 0.82rem;
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .likert-scale label.selected {
+      border-color: #1a1a1a;
+      background: #f3f3f3;
+      font-weight: 600;
+    }
+
+    .likert-scale input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .likert-hint {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      color: #999;
+      margin-top: 0.35rem;
+    }
+
+    .screen-note {
+      font-size: 0.9rem;
+      color: #555;
+      margin-bottom: 1rem;
+    }
+
     textarea {
       width: 100%;
       font-family: inherit;
@@ -422,14 +495,14 @@
       <h1>随机身份</h1>
       <p class="subtitle">做一个选择，分别以「女生」和「男生」的身份各看一遍结果——你会发现，同样的选择，收到的评价不一样。</p>
       <div class="hero-box">
-        <p><strong>这是什么？</strong> 一个 2–3 分钟的网页小体验，关于日常里的性别双标（不是心理测试，也不用注册）。</p>
+        <p><strong>这是什么？</strong> 一个约 3–4 分钟的网页小体验：玩前 / 玩后问卷 + 性别双标对照（不是心理测试，也不用注册）。</p>
         <ol class="hero-steps">
-          <li>读一个小场景（比如演讲前今晚做什么）</li>
-          <li>选 A 或 B</li>
-          <li>先看女生线反馈，再看男生线反馈，自己对照</li>
+          <li>玩前简短问卷（约 1 分钟）</li>
+          <li>读场景、选 A 或 B，看女生线与男生线反馈</li>
+          <li>玩后再填同样问卷，可选写一句感想</li>
         </ol>
         <div class="hero-cta">
-          <button type="button" class="demo-link" id="heroStart">开始体验（约 2 分钟）↓</button>
+          <button type="button" class="demo-link" id="heroStart">开始体验（约 3–4 分钟）↓</button>
           <a class="demo-link secondary" href="game.html">完整版小游戏（约 10 分钟）→</a>
         </div>
         <p class="time-note">建议先玩上面的短体验；完整版含数值、剧情和向导「规规」。</p>
@@ -443,7 +516,7 @@
 
     <section id="experience">
       <h2>亲身体验</h2>
-      <p style="font-size: 0.95rem; color: #555; margin-bottom: 0.5rem;">点「开始」，按提示选一次即可。</p>
+      <p style="font-size: 0.95rem; color: #555; margin-bottom: 0.5rem;">先填玩前问卷，再体验，最后填玩后问卷。</p>
       <div class="experience-box" id="app">
         <p class="ethics">匿名 · 可随时退出 · 不是心理测试</p>
         <div id="screen"></div>
@@ -468,7 +541,7 @@
 
         <h3>我做了什么 / What I made</h3>
         <p>我做了一个 2–3 分钟的网页互动体验。用户做同一个选择，先看一条路径的反馈，再看另一条路径的反馈。</p>
-        <p>页面最后让用户回答：两次结果不一样时，第一反应更接近「奇怪 / 不公平」「正常」还是「说不清」。</p>
+        <p>页面收集玩前 / 玩后相同的 5 道打分题（1–5 分），用来对比体验前后的变化；最后可选写一句开放感想。</p>
 
         <h3>初步发现 / Early takeaways</h3>
         <p>文献告诉我：偏见不总是很明显，它也可能像「为你好」的建议。</p>
@@ -525,7 +598,7 @@
       <p>数据分层收集，除游玩外均可选：</p>
       <ul>
         <li><strong>游戏内日志</strong>——每轮选择、当前线（女/男）、职业路径、压力峰值、是否触发休息线、是否使用隐藏拒绝、向导指针最终位置。</li>
-        <li><strong>玩前 / 玩后问卷</strong>——简短李克特题（如「同样行为是否应得到相似评价？」）及一道开放题：「向导从未提示可以拒绝，让你想到现实中的什么？」</li>
+        <li><strong>玩前 / 玩后问卷</strong>——相同 5 道 1–5 分题（玩前含「是否学过性别研究」背景题），及一道可选开放题：「这让你想到生活中的什么？」</li>
         <li><strong>分发</strong>——校内同学与社交媒体；参与者可见伦理说明（匿名、可随时退出、非临床诊断）。</li>
       </ul>
       <p>
@@ -593,10 +666,22 @@
       2: "不买新衣服，把时间用来改稿和排练"
     };
 
+    var LIKERT_ITEMS = [
+      "如果两个人做出了相同的选择，却因为性别而收到不同的评价，这是不公平的。",
+      "在日常生活中，我能注意到很多行为背后存在「因性别而不同的标准」。",
+      "当别人说「女生应该……」「男生应该……」时，我常常会想：这是谁规定的？",
+      "如果女性或男性在某件事上受到更严厉的批评，这通常说明是他们自己做得不够好。",
+      "看到别人因性别受到区别对待时，我会感到不安或别扭。"
+    ];
+
+    var LIKERT_REVERSE_INDEX = 3;
+
     var state = {
       step: "intro",
       choice: null,
-      surveyAnswer: null,
+      genderStudy: null,
+      preScores: [null, null, null, null, null],
+      postScores: [null, null, null, null, null],
       openText: "",
       submitStatus: null
     };
@@ -627,22 +712,126 @@
     function render() {
       switch (state.step) {
         case "intro": renderIntro(); break;
+        case "preSurvey": renderPreSurvey(); break;
         case "choose": renderChoose(); break;
         case "female": renderFemale(); break;
         case "male": renderMale(); break;
         case "compare": renderCompare(); break;
-        case "survey": renderSurvey(); break;
+        case "postSurvey": renderPostSurvey(); break;
         case "done": renderDone(); break;
       }
     }
 
+    function likertLegendHtml() {
+      return '<p class="likert-legend">每题选 1–5 分：<strong>1</strong> = 完全不同意 · <strong>5</strong> = 完全同意</p>';
+    }
+
+    function likertItemsHtml(prefix) {
+      var html = "";
+      for (var i = 0; i < LIKERT_ITEMS.length; i++) {
+        html += '<div class="likert-item">' +
+          '<p class="likert-q">' + (i + 1) + ". " + LIKERT_ITEMS[i] + "</p>" +
+          '<div class="likert-scale" data-prefix="' + prefix + '" data-index="' + i + '">';
+        for (var score = 1; score <= 5; score++) {
+          html += '<label><input type="radio" name="' + prefix + "_q" + (i + 1) + '" value="' + score + '" />' + score + "</label>";
+        }
+        html += '</div><div class="likert-hint"><span>完全不同意</span><span>完全同意</span></div></div>';
+      }
+      return html;
+    }
+
+    function bindLikertScales(container, scoresKey) {
+      var scales = container.querySelectorAll(".likert-scale");
+      for (var i = 0; i < scales.length; i++) {
+        (function (scale) {
+          var index = parseInt(scale.getAttribute("data-index"), 10);
+          var labels = scale.querySelectorAll("label");
+          for (var j = 0; j < labels.length; j++) {
+            labels[j].querySelector("input").onchange = function () {
+              for (var k = 0; k < labels.length; k++) {
+                labels[k].classList.remove("selected");
+              }
+              this.parentElement.classList.add("selected");
+              state[scoresKey][index] = parseInt(this.value, 10);
+            };
+          }
+        })(scales[i]);
+      }
+    }
+
+    function bindGenderStudy(container) {
+      var labels = container.querySelectorAll(".survey label");
+      for (var i = 0; i < labels.length; i++) {
+        labels[i].querySelector("input").onchange = function () {
+          for (var j = 0; j < labels.length; j++) {
+            labels[j].classList.remove("selected");
+          }
+          this.parentElement.classList.add("selected");
+          state.genderStudy = this.value;
+        };
+      }
+    }
+
+    function validateLikert(scores) {
+      for (var i = 0; i < scores.length; i++) {
+        if (!scores[i]) return false;
+      }
+      return true;
+    }
+
+    function scoredValue(raw, index) {
+      if (index === LIKERT_REVERSE_INDEX) return 6 - raw;
+      return raw;
+    }
+
+    function averageDelta() {
+      var total = 0;
+      for (var i = 0; i < LIKERT_ITEMS.length; i++) {
+        total += scoredValue(state.postScores[i], i) - scoredValue(state.preScores[i], i);
+      }
+      return (total / LIKERT_ITEMS.length).toFixed(2);
+    }
+
     function renderIntro() {
       screenEl.innerHTML =
-        '<p class="step-label">第 1 步 / 共 5 步</p>' +
-        '<p>接下来，你会用<strong>同一个选择</strong>，分别体验<strong>女生线</strong>和<strong>男生线</strong>。</p>' +
-        '<p>不会提前告诉你哪条是哪条——先读场景、做选择，再看各自收到的评价。</p>' +
-        '<div class="choices"><button type="button" class="btn btn-primary" id="btnStart">开始</button></div>';
+        '<p class="step-label">开始</p>' +
+        '<p>接下来你会：</p>' +
+        '<ol style="padding-left:1.2rem;margin-bottom:1rem;color:#444;font-size:0.95rem;">' +
+        "<li>先填<strong>玩前</strong>简短问卷（5 题打分 + 1 道背景题）</li>" +
+        "<li>用<strong>同一个选择</strong>体验女生线与男生线，自己对照反馈</li>" +
+        "<li>再填<strong>玩后</strong>同样 5 题，可选写一句感想</li>" +
+        "</ol>" +
+        '<div class="choices"><button type="button" class="btn btn-primary" id="btnStart">开始玩前问卷</button></div>';
       document.getElementById("btnStart").onclick = function () {
+        state.step = "preSurvey";
+        render();
+      };
+    }
+
+    function renderPreSurvey() {
+      screenEl.innerHTML =
+        '<p class="step-label">第 1 步 / 共 7 步 · 玩前问卷</p>' +
+        '<p class="screen-note">以下问题只用于研究统计，没有标准答案。请先凭<strong>玩体验之前</strong>的真实感受作答。</p>' +
+        '<div class="likert-block">' +
+        "<p><strong>你是否学过性别研究相关课程？</strong></p>" +
+        '<div class="survey" id="genderStudyOptions">' +
+        '<label><input type="radio" name="genderStudy" value="yes" /> 是</label>' +
+        '<label><input type="radio" name="genderStudy" value="no" /> 否</label>' +
+        "</div></div>" +
+        likertLegendHtml() +
+        '<div class="likert-block">' + likertItemsHtml("pre") + "</div>" +
+        '<div class="choices"><button type="button" class="btn btn-primary" id="btnPreDone">填好了，开始体验</button></div>';
+      bindGenderStudy(screenEl);
+      bindLikertScales(screenEl, "preScores");
+      document.getElementById("btnPreDone").onclick = function () {
+        if (!state.genderStudy) {
+          alert("请先选择是否学过性别研究相关课程。");
+          return;
+        }
+        if (!validateLikert(state.preScores)) {
+          alert("请为每一道打分题选择一个 1–5 分。");
+          return;
+        }
         state.step = "choose";
         render();
       };
@@ -650,7 +839,7 @@
 
     function renderChoose() {
       screenEl.innerHTML =
-        '<p class="step-label">第 2 步 / 共 5 步 · 做一个选择</p>' +
+        '<p class="step-label">第 2 步 / 共 7 步 · 做一个选择</p>' +
         '<div class="scenario">' +
         '<p><strong>场景</strong></p>' +
         '<p>三天后有班级 / 部门公开演讲。今晚你只能准备一件事。</p>' +
@@ -672,7 +861,7 @@
     function renderFemale() {
       var fb = FEEDBACK.female[state.choice];
       screenEl.innerHTML =
-        '<p class="step-label">第 2 步 · 你收到的反馈（路径一）</p>' +
+        '<p class="step-label">第 3 步 / 共 7 步 · 你收到的反馈（路径一）</p>' +
         '<div class="scenario">' +
         '<p>你选了：<strong>' + state.choice + ' · ' + CHOICE_LABEL[state.choice] + '</strong></p>' +
         '</div>' +
@@ -689,7 +878,7 @@
     function renderMale() {
       var fb = FEEDBACK.male[state.choice];
       screenEl.innerHTML =
-        '<p class="step-label">第 3 步 / 共 5 步 · 同一选择，另一条路径</p>' +
+        '<p class="step-label">第 4 步 / 共 7 步 · 同一选择，另一条路径</p>' +
         '<div class="scenario">' +
         '<p>同一道题、同一选项：<strong>' + state.choice + ' · ' + CHOICE_LABEL[state.choice] + '</strong></p>' +
         '</div>' +
@@ -707,7 +896,7 @@
       var f = FEEDBACK.female[state.choice];
       var m = FEEDBACK.male[state.choice];
       screenEl.innerHTML =
-        '<p class="step-label">第 4 步 / 共 5 步 · 对照</p>' +
+        '<p class="step-label">第 5 步 / 共 7 步 · 对照</p>' +
         '<div class="compare-box">' +
         '<p>你选了：<strong>' + state.choice + ' · ' + CHOICE_LABEL[state.choice] + '</strong></p>' +
         '<p><strong>路径一收到的评价：</strong>' + f.short + '</p>' +
@@ -716,53 +905,38 @@
         '</div>' +
         '<p class="ending-note">差别往往不来自你够不够努力，而来自别人怎么解读你的行为——这不一定是你的错。</p>' +
         '<div class="choices" style="margin-top:1rem">' +
-        '<button type="button" class="btn btn-primary" id="btnSurvey">答一道玩后题（可选跳过开放题）</button>' +
-        '</div>';
-      document.getElementById("btnSurvey").onclick = function () {
-        state.step = "survey";
+        '<button type="button" class="btn btn-primary" id="btnPostSurvey">继续，填玩后问卷</button>' +
+        "</div>";
+      document.getElementById("btnPostSurvey").onclick = function () {
+        state.step = "postSurvey";
         render();
       };
     }
 
-    function renderSurvey() {
+    function renderPostSurvey() {
       screenEl.innerHTML =
-        '<p class="step-label">第 5 步 / 共 5 步 · 玩后反馈</p>' +
-        '<p><strong>两次结果不一样，你的第一反应更接近？</strong></p>' +
-        '<div class="survey" id="surveyOptions">' +
-        '<label><input type="radio" name="reaction" value="A" /> A · 奇怪 / 不太公平</label>' +
-        '<label><input type="radio" name="reaction" value="B" /> B · 正常，本来就会不同</label>' +
-        '<label><input type="radio" name="reaction" value="C" /> C · 说不清</label>' +
-        '</div>' +
+        '<p class="step-label">第 6 步 / 共 7 步 · 玩后问卷</p>' +
+        '<p class="screen-note">请再答<strong>与玩前完全相同</strong>的 5 道题。对照刚才的体验，凭<strong>现在</strong>的感受打分。</p>' +
+        likertLegendHtml() +
+        '<div class="likert-block">' + likertItemsHtml("post") + "</div>" +
         '<p style="margin-top:1rem;"><strong>这让你想到生活中的什么？</strong>（可跳过）</p>' +
         '<textarea id="openText" placeholder="写一句即可，也可以留空…"></textarea>' +
         '<div class="choices">' +
         '<button type="button" class="btn btn-primary" id="btnSubmit">提交并完成</button>' +
-        '<button type="button" class="btn btn-secondary" id="btnSkip">跳过开放题并完成</button>' +
-        '</div>';
-
-      var labels = screenEl.querySelectorAll(".survey label");
-      for (var i = 0; i < labels.length; i++) {
-        labels[i].querySelector("input").onchange = function () {
-          for (var j = 0; j < labels.length; j++) {
-            labels[j].classList.remove("selected");
-          }
-          this.parentElement.classList.add("selected");
-          state.surveyAnswer = this.value;
-        };
-      }
-
-      document.getElementById("btnSubmit").onclick = finishSurvey;
-      document.getElementById("btnSkip").onclick = finishSurvey;
+        '<button type="button" class="btn btn-secondary" id="btnSkipOpen">跳过开放题并完成</button>' +
+        "</div>";
+      bindLikertScales(screenEl, "postScores");
+      document.getElementById("btnSubmit").onclick = finishPostSurvey;
+      document.getElementById("btnSkipOpen").onclick = finishPostSurvey;
     }
 
-    function finishSurvey() {
-      var selected = screenEl.querySelector('input[name="reaction"]:checked');
-      if (!selected) {
-        alert("请先选择 A、B 或 C。");
+    function finishPostSurvey() {
+      if (!validateLikert(state.postScores)) {
+        alert("请为每一道打分题选择一个 1–5 分。");
         return;
       }
-      state.surveyAnswer = selected.value;
-      state.openText = document.getElementById("openText").value.trim();
+      var openEl = document.getElementById("openText");
+      state.openText = openEl ? openEl.value.trim() : "";
       state.submitStatus = "pending";
       state.step = "done";
       render();
@@ -791,7 +965,17 @@
         },
         body: JSON.stringify({
           choice: state.choice,
-          survey_answer: state.surveyAnswer,
+          studied_gender: state.genderStudy === "yes",
+          pre_q1: state.preScores[0],
+          pre_q2: state.preScores[1],
+          pre_q3: state.preScores[2],
+          pre_q4: state.preScores[3],
+          pre_q5: state.preScores[4],
+          post_q1: state.postScores[0],
+          post_q2: state.postScores[1],
+          post_q3: state.postScores[2],
+          post_q4: state.postScores[3],
+          post_q5: state.postScores[4],
           open_text: state.openText || null,
           source: "index_experience"
         })
@@ -803,39 +987,37 @@
     }
 
     function renderDone() {
-      var reactionText = {
-        A: "奇怪 / 不太公平",
-        B: "正常，本来就会不同",
-        C: "说不清"
-      }[state.surveyAnswer] || "";
-
       var extra = state.openText
-        ? '<p>你写道：<em>\"' + escapeHtml(state.openText) + '\"</em></p>'
+        ? '<p>你写道：<em>"' + escapeHtml(state.openText) + '"</em></p>'
         : "";
 
       var saveNote = {
         pending: '<p style="font-size:0.9rem;color:#888;">正在保存你的回答…</p>',
         success: '<p style="font-size:0.9rem;color:#888;">已匿名保存，谢谢参与。</p>',
-        error: '<p style="font-size:0.9rem;color:#b45309;">暂时无法保存到服务器，但你的回答如下。</p>'
+        error: '<p style="font-size:0.9rem;color:#b45309;">暂时无法保存到服务器，但你的问卷已在本地完成。</p>'
       }[state.submitStatus] || '<p style="font-size:0.9rem;color:#888;">谢谢参与。</p>';
 
       screenEl.innerHTML =
         '<div class="thank-you">' +
-        '<p><strong>体验完成，谢谢参与。</strong></p>' +
-        '<p>你的选择：' + state.choice + ' · ' + CHOICE_LABEL[state.choice] + '</p>' +
-        '<p>你的反应：' + reactionText + '</p>' +
+        '<p class="step-label">第 7 步 / 共 7 步 · 完成</p>' +
+        "<p><strong>体验完成，谢谢参与。</strong></p>" +
+        "<p>你的选择：" + state.choice + " · " + CHOICE_LABEL[state.choice] + "</p>" +
+        "<p>玩前 / 玩后问卷已记录（第 4 题在分析时会反向计分）。</p>" +
+        "<p>5 题平均变化（已计反向题）：<strong>" + averageDelta() + "</strong> 分</p>" +
         extra +
         saveNote +
-        '</div>' +
+        "</div>" +
         '<div class="choices">' +
         '<button type="button" class="btn btn-primary" id="btnRestart">再玩一次</button>' +
         '<a class="btn btn-secondary" href="game.html" style="display:block;text-align:center;text-decoration:none;line-height:1.4;padding-top:0.85rem;padding-bottom:0.85rem;">去玩完整版小游戏</a>' +
-        '</div>';
+        "</div>";
 
       document.getElementById("btnRestart").onclick = function () {
         state.step = "intro";
         state.choice = null;
-        state.surveyAnswer = null;
+        state.genderStudy = null;
+        state.preScores = [null, null, null, null, null];
+        state.postScores = [null, null, null, null, null];
         state.openText = "";
         state.submitStatus = null;
         render();

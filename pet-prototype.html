@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>随机身份 · 泡泡动作原型</title>
+  <style>
+    :root {
+      --guide: #c4b5fd;
+      --guide-deep: #a78bfa;
+      --guide-soft: #ede9fe;
+      --face: #5b4578;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "PingFang SC", system-ui, sans-serif;
+      background: #ffffff;
+      color: #3f3f46;
+      min-height: 100vh;
+    }
+
+    .wrap {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 40px 24px 56px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    header h1 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #27272a;
+      letter-spacing: 0.02em;
+    }
+
+    header p {
+      font-size: 0.85rem;
+      color: #a1a1aa;
+      margin-top: 6px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 28px 20px;
+    }
+
+    .pose-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pose-label {
+      font-size: 0.8rem;
+      color: #71717a;
+    }
+
+    .scene {
+      position: relative;
+      width: 120px;
+      height: 130px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 18px;
+      overflow: visible;
+    }
+
+    .scene:has(.pose-talk) {
+      height: 148px;
+      padding-top: 8px;
+    }
+
+    .shadow {
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      width: 40px;
+      height: 7px;
+      margin-left: -20px;
+      background: radial-gradient(ellipse, rgba(196, 181, 253, 0.35) 0%, transparent 72%);
+    }
+
+    .bubble-wrap {
+      position: relative;
+      z-index: 1;
+      transform-origin: center bottom;
+    }
+
+    .pose-talk .bubble-wrap,
+    .pose-talk {
+      overflow: visible;
+    }
+
+    .limb.hand { transform-origin: center center; }
+
+    /* 1 漂浮 */
+    .pose-idle { animation: anim-idle 3.2s ease-in-out infinite; }
+    .scene:has(.pose-idle) .shadow { animation: shadow-idle 3.2s ease-in-out infinite; }
+    .pose-idle .orb { animation: breathe 3.2s ease-in-out infinite; }
+
+    @keyframes anim-idle {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    @keyframes shadow-idle {
+      0%, 100% { transform: scale(1); opacity: 0.75; }
+      50% { transform: scale(0.85); opacity: 0.45; }
+    }
+    @keyframes breathe {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
+
+    /* 2 招手 */
+    .pose-wave { animation: anim-wave-body 0.9s ease-in-out infinite; }
+    .scene:has(.pose-wave) .shadow { animation: shadow-wave 0.9s ease-in-out infinite; }
+
+    @keyframes anim-wave-body {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(3deg); }
+    }
+    @keyframes anim-wave-hand {
+      0%, 100% { transform: rotate(-42deg); }
+      50% { transform: rotate(-5deg); }
+    }
+    @keyframes shadow-wave {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    /* 3 说话 */
+    .pose-talk .bubble-wrap {
+      isolation: isolate;
+      overflow: visible;
+    }
+
+    .pose-talk { animation: anim-talk 2s ease-in-out infinite; margin-top: 0; }
+    .scene:has(.pose-talk) .shadow { animation: shadow-talk 2s ease-in-out infinite; }
+    .pose-talk .speech {
+      animation: anim-speech 2s ease-in-out infinite;
+      z-index: 10;
+      top: -22px;
+    }
+    .pose-talk .mouth.open { animation: anim-talk-mouth 0.42s ease-in-out infinite; }
+    .pose-talk .body { z-index: 1; }
+    .pose-talk .orb { z-index: 1; }
+
+    @keyframes anim-talk {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-3px); }
+    }
+    @keyframes anim-speech {
+      0%, 100% { transform: translateX(-50%) translateY(0); opacity: 1; }
+      50% { transform: translateX(-50%) translateY(-2px); opacity: 0.92; }
+    }
+    @keyframes anim-talk-mouth {
+      0%, 100% {
+        width: 7px;
+        height: 2px;
+        border-radius: 50%;
+        background: transparent;
+        border: 1.5px solid rgba(91, 69, 120, 0.35);
+      }
+      45%, 55% {
+        width: 9px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgba(91, 69, 120, 0.22);
+        border: 1.5px solid rgba(91, 69, 120, 0.42);
+      }
+    }
+    @keyframes shadow-talk {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 0.55; }
+    }
+
+    /* 4 思考 */
+    .pose-think { animation: anim-think-sway 2.8s ease-in-out infinite; }
+    .scene:has(.pose-think) .shadow { animation: shadow-think 2.8s ease-in-out infinite; }
+    .pose-think .hand.left { animation: anim-think-hand 2.8s ease-in-out infinite; }
+    .pose-think .eyes .eye { animation: anim-think-eyes 2.8s ease-in-out infinite; }
+
+    @keyframes anim-think-sway {
+      0%, 100% { transform: rotate(-2deg); }
+      50% { transform: rotate(2deg); }
+    }
+    @keyframes anim-think-hand {
+      0%, 100% { transform: rotate(-28deg) translateY(0); }
+      50% { transform: rotate(-28deg) translateY(2px); }
+    }
+    @keyframes anim-think-eyes {
+      0%, 100% { transform: translateY(-1px); }
+      50% { transform: translate(1px, -2px); }
+    }
+    @keyframes shadow-think {
+      0%, 100% { transform: scaleX(1); }
+      50% { transform: scaleX(0.92); }
+    }
+
+    /* 5 开心：跳起 → 以靠身体一端为轴挥手上举 → 停一下 → 落下 → 眼睛变弯弯 ^ ^ */
+    .pose-happy { animation: anim-happy 2.8s ease-in-out infinite; }
+    .scene:has(.pose-happy) .shadow { animation: shadow-happy 2.8s ease-in-out infinite; }
+    .pose-happy .hand.left { animation: anim-happy-hand-l 2.8s ease-in-out infinite; }
+    .pose-happy .hand.right { animation: anim-happy-hand-r 2.8s ease-in-out infinite; }
+    .pose-happy .hand.left,
+    .pose-happy .hand.right {
+      width: 15px;
+      height: 9px;
+    }
+
+    .pose-happy .hand.left { transform-origin: 92% 50%; }
+    .pose-happy .hand.right { transform-origin: 8% 50%; }
+
+    .pose-happy .pupil { animation: anim-happy-pupil 2.8s ease-in-out infinite; }
+    .pose-happy .eye-left .cheer { animation: anim-happy-cheer-l 2.8s ease-in-out infinite; }
+    .pose-happy .eye-right .cheer { animation: anim-happy-cheer-r 2.8s ease-in-out infinite; }
+
+    @keyframes anim-happy {
+      0%, 100% { transform: translateY(0); }
+      10% { transform: translateY(-18px); }
+      24%, 52% { transform: translateY(-18px); }
+      66% { transform: translateY(-18px); }
+      82% { transform: translateY(0); }
+    }
+    @keyframes anim-happy-hand-l {
+      0%, 8% { transform: rotate(18deg); }
+      16% { transform: rotate(-58deg); }
+      24%, 32% { transform: rotate(-78deg); }
+      40% { transform: rotate(-48deg); }
+      48%, 56% { transform: rotate(-78deg); }
+      64%, 72% { transform: rotate(-58deg); }
+      84%, 100% { transform: rotate(18deg); }
+    }
+    @keyframes anim-happy-hand-r {
+      0%, 8% { transform: rotate(-18deg); }
+      16% { transform: rotate(58deg); }
+      24%, 32% { transform: rotate(78deg); }
+      40% { transform: rotate(48deg); }
+      48%, 56% { transform: rotate(78deg); }
+      64%, 72% { transform: rotate(58deg); }
+      84%, 100% { transform: rotate(-18deg); }
+    }
+    @keyframes anim-happy-pupil {
+      0%, 76% { opacity: 0.65; transform: scale(1); }
+      86%, 100% { opacity: 0; transform: scale(0.2); }
+    }
+    @keyframes anim-happy-cheer-l {
+      0%, 78% { opacity: 0; transform: translateX(-50%) rotate(-14deg) scale(0.55); }
+      88%, 100% { opacity: 1; transform: translateX(-50%) rotate(-14deg) scale(1); }
+    }
+    @keyframes anim-happy-cheer-r {
+      0%, 78% { opacity: 0; transform: translateX(-50%) rotate(14deg) scale(0.55); }
+      88%, 100% { opacity: 1; transform: translateX(-50%) rotate(14deg) scale(1); }
+    }
+    @keyframes shadow-happy {
+      0%, 100% { transform: scale(1); opacity: 0.72; }
+      10%, 66% { transform: scale(0.58); opacity: 0.28; }
+      82% { transform: scale(1); opacity: 0.72; }
+    }
+
+    /* 6 指点 */
+    .pose-point { animation: anim-point 1.6s ease-in-out infinite; }
+    .scene:has(.pose-point) .shadow { animation: shadow-point 1.6s ease-in-out infinite; }
+    .pose-point .hand.right { animation: anim-point-hand 1.6s ease-in-out infinite; }
+
+    @keyframes anim-point {
+      0%, 100% { transform: translateX(6px); }
+      50% { transform: translateX(2px); }
+    }
+    @keyframes anim-point-hand {
+      0%, 100% { transform: rotate(-8deg) translateX(0); }
+      50% { transform: rotate(-8deg) translateX(-4px); }
+    }
+    @keyframes shadow-point {
+      0%, 100% { transform: translateX(2px); }
+      50% { transform: translateX(-2px); }
+    }
+
+    /* 7 休息 */
+    .pose-rest { animation: anim-rest 4s ease-in-out infinite; }
+    .scene:has(.pose-rest) .shadow { animation: shadow-rest 4s ease-in-out infinite; }
+    .pose-rest .orb { animation: breathe-slow 4s ease-in-out infinite; }
+
+    @keyframes anim-rest {
+      0%, 100% { transform: translateY(4px); }
+      50% { transform: translateY(7px); }
+    }
+    @keyframes breathe-slow {
+      0%, 100% { transform: scale(1); opacity: 0.92; }
+      50% { transform: scale(0.97); opacity: 0.88; }
+    }
+    @keyframes shadow-rest {
+      0%, 100% { transform: scale(1.1); opacity: 0.6; }
+      50% { transform: scale(1.2); opacity: 0.75; }
+    }
+
+    .body {
+      position: relative;
+      width: 56px;
+      height: 62px;
+      z-index: 1;
+    }
+
+    .limb {
+      position: absolute;
+      background: radial-gradient(ellipse at 40% 35%, var(--guide-soft) 0%, var(--guide) 55%, #9f7aea 100%);
+      box-shadow: 0 0 10px rgba(196, 181, 253, 0.2);
+    }
+
+    .hand {
+      width: 14px;
+      height: 10px;
+      border-radius: 50%;
+      top: 26px;
+    }
+
+    .foot {
+      width: 12px;
+      height: 8px;
+      border-radius: 50%;
+      bottom: 0;
+    }
+
+    .orb {
+      position: absolute;
+      left: 2px;
+      top: 2px;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      z-index: 1;
+      background: radial-gradient(circle at 38% 32%, #f5f0ff 0%, #e9d5ff 18%, #d8b4fe 50%, #c084fc 88%);
+      box-shadow:
+        0 0 0 1px rgba(237, 233, 254, 0.35),
+        0 6px 18px rgba(192, 132, 252, 0.22);
+    }
+
+    .orb::before {
+      content: "";
+      position: absolute;
+      top: 11px;
+      left: 13px;
+      width: 16px;
+      height: 11px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.45);
+    }
+
+    .face {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding-top: 8px;
+      gap: 5px;
+    }
+
+    .eyes {
+      display: flex;
+      gap: 10px;
+    }
+
+    .eye {
+      position: relative;
+      width: 11px;
+      height: 11px;
+      flex: 0 0 11px;
+    }
+
+    .pupil {
+      position: absolute;
+      left: 50%;
+      top: 54%;
+      width: 3.5px;
+      height: 3.5px;
+      margin: -1.75px 0 0 -1.75px;
+      border-radius: 50%;
+      background: var(--face);
+      opacity: 0.65;
+    }
+
+    .cheer {
+      position: absolute;
+      left: 50%;
+      top: 4px;
+      width: 9px;
+      height: 5px;
+      margin-left: -4.5px;
+      border-top: 2px solid rgba(91, 69, 120, 0.62);
+      border-radius: 50% 50% 0 0;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .eye-left .cheer { transform: translateX(-50%) rotate(-14deg); }
+    .eye-right .cheer { transform: translateX(-50%) rotate(14deg); }
+
+    .mouth {
+      width: 9px;
+      height: 4px;
+      border-bottom: 1.5px solid rgba(91, 69, 120, 0.4);
+      border-radius: 0 0 9px 9px;
+    }
+
+    .mouth.open {
+      width: 7px;
+      height: 2px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(91, 69, 120, 0.38);
+      background: transparent;
+      box-sizing: border-box;
+    }
+
+    .mouth.wide {
+      width: 12px;
+      height: 5px;
+      border-bottom-width: 2px;
+    }
+
+    .mouth.line {
+      width: 10px;
+      height: 0;
+      border: none;
+      border-top: 1.5px solid rgba(91, 69, 120, 0.35);
+      border-radius: 0;
+    }
+
+    .speech {
+      position: absolute;
+      top: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #fafafa;
+      border: 1px solid #e4e4e7;
+      color: #71717a;
+      font-size: 0.62rem;
+      padding: 3px 7px;
+      border-radius: 8px;
+      white-space: nowrap;
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    .speech::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -4px;
+      width: 6px;
+      height: 6px;
+      margin-left: -3px;
+      background: #fafafa;
+      border-right: 1px solid #e4e4e7;
+      border-bottom: 1px solid #e4e4e7;
+      transform: rotate(45deg);
+    }
+
+    /* —— 动作 —— */
+
+    /* 1 漂浮 */
+    .pose-idle .hand.left { left: -6px; transform: rotate(-12deg); }
+    .pose-idle .hand.right { right: -6px; transform: rotate(12deg); }
+    .pose-idle .foot.left { left: 12px; }
+    .pose-idle .foot.right { right: 12px; }
+
+    /* 2 招手 */
+    .pose-wave .hand.left { left: -6px; top: 30px; transform: rotate(-8deg); }
+    .pose-wave .hand.right {
+      right: -12px;
+      top: 4px;
+      width: 12px;
+      height: 15px;
+      transform: rotate(-42deg);
+      transform-origin: 30% 85%;
+      animation: anim-wave-hand 0.9s ease-in-out infinite;
+    }
+    .pose-wave .foot.left { left: 11px; }
+    .pose-wave .foot.right { right: 11px; }
+
+    /* 3 说话 */
+    .pose-talk .hand.left { left: -5px; top: 28px; }
+    .pose-talk .hand.right { right: -5px; top: 28px; transform: rotate(8deg); }
+    .pose-talk .foot.left { left: 12px; }
+    .pose-talk .foot.right { right: 12px; }
+
+    /* 4 思考 */
+    .pose-think .hand.left {
+      left: -8px;
+      top: 27px;
+      width: 12px;
+      height: 11px;
+      transform: rotate(-28deg);
+      transform-origin: 90% 78%;
+      z-index: 2;
+    }
+    .pose-think .hand.right { right: -6px; top: 32px; transform: rotate(10deg); }
+    .pose-think .foot.left { left: 13px; bottom: -2px; }
+    .pose-think .foot.right { right: 13px; bottom: -2px; }
+
+    /* 5 开心 */
+    .pose-happy .hand.left {
+      left: -2px;
+      top: 30px;
+      transform: rotate(18deg);
+      transform-origin: 92% 50%;
+    }
+    .pose-happy .hand.right {
+      right: -2px;
+      top: 30px;
+      transform: rotate(-18deg);
+      transform-origin: 8% 50%;
+    }
+    .pose-happy .foot.left { left: 9px; bottom: -3px; transform: rotate(-8deg); }
+    .pose-happy .foot.right { right: 9px; bottom: -3px; transform: rotate(8deg); }
+
+    /* 6 指点 */
+    .pose-point .hand.left { left: -6px; top: 30px; }
+    .pose-point .hand.right {
+      left: -22px;
+      right: auto;
+      top: 24px;
+      width: 16px;
+      height: 9px;
+      transform: rotate(-8deg);
+    }
+    .pose-point .foot.left { left: 14px; }
+    .pose-point .foot.right { right: 10px; transform: rotate(6deg); }
+
+    /* 7 休息 */
+    .pose-rest .hand.left { left: -4px; top: 32px; opacity: 0.85; }
+    .pose-rest .hand.right { right: -4px; top: 32px; opacity: 0.85; }
+    .pose-rest .foot.left { left: 13px; bottom: 2px; }
+    .pose-rest .foot.right { right: 13px; bottom: 2px; }
+    .pose-rest .pupil {
+      width: 5px;
+      height: 1.5px;
+      border-radius: 2px;
+      margin-top: -0.75px;
+    }
+
+    .pose-rest .cheer {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>规规 · 泡泡动作</h1>
+      <p>纯白底 · 每个动作都有小动画</p>
+    </header>
+
+    <div class="grid">
+      <div class="pose-card">
+        <div class="scene">
+          <div class="bubble-wrap pose-idle">
+            <div class="body">
+              <span class="limb hand left"></span>
+              <span class="limb hand right"></span>
+              <div class="orb">
+                <div class="face">
+                  <div class="eyes">
+                    <span class="eye eye-left">
+                      <span class="pupil"></span>
+                      <span class="cheer"></span>
+                    </span>
+                    <span class="eye eye-right">
+                      <span class="pupil"></span>
+                      <span class="cheer"></span>
+                    </span>
+                  </div>
+                  <div class="mouth"></div>
+                </div>
+              </div>
+              <span class="limb foot left"></span>
+              <span class="limb foot right"></span>
+            </div>
+          </div>
+          <div class="shadow"></div>
+        </div>
+        <div class="pose-label">漂浮</div>
+      </div>
+
+      <div class="pose-card">
+        <div class="scene">
+          <div class="bubble-wrap pose-wave">
+            <div class="body">
+              <span class="limb hand left"></span>
+              <span class="limb hand right"></span>
+              <div class="orb">
+                <div class="face">
+                  <div class="eyes">
+                    <span class="eye eye-left">
+                      <span class="pupil"></span>
+                      <span class="cheer"></span>
+                    </span>
+                    <span class="eye eye-right">
+                      <span class="pupil"></span>
+                      <span class="cheer"></span>
+                    </span>
+                  </div>
+                  <div class="mouth wide"></div>
+                </div>
+              </div>
+              <span class="limb foot left"></span>
+              <span class="limb foot right"></span>
+            </div>
+          </div>
+          <div class="shadow"></div>
+        </div>
+        <div class="pose-label">招手</div>
+      </div>
+
+      <div class="pose-card">
+        <div class="scene">
+          <div class="bubble-wrap pose-talk">
+            <div class="body">
+              <span class="limb hand left"></span>
+              <span class="limb hand right"></span>
+              <div class="orb">
+                <div class="face">
+                  <div class="eyes">
+                    <span class="eye eye-left">
+                      <span class="pupil"></span>
+                      <span class="cheer"></span>
+                    </span>
+                    <span class="eye eye-right">
+                      <span class="pupil"></span>
+                      <span class="cheer"></span>
+                    </span>
+                  </div>
+                  <div class="mouth open"></div>
+                </div>
+              </div>
+              <span class="limb foot left"></span>
+              <span class="limb foot right"></span>
+            </div>
+            <div class="speech">选哪条线？</div>
+          </div>
+          <div class="shadow"></div>
+        </div>
+        <div class="pose-label">说话</div>
+      </div>
+
+      <div class="pose-card">
+        <div class="scene">
+          <div class="bubble-wrap pose-think">
+            <div class="body">
+              <span class="limb hand left"></span>
+              <span class="limb hand right"></span>
+              <div class="orb">
+                <div class="face">
+                  <div class="eyes">
+                    <span class="eye eye-left">
+                      <span class="pupil"></span>
+                      <span class="cheer"></span>
+                    </span>
+                    <span class="eye eye-right">
+                      <span class="pupil"></span>
+                      <span class="cheer"></span>
+                    </span>
+                  </div>
+                  <div class="mouth line"></div>
+                </div>
+              </div>
+              <span class="limb foot left"></span>
+              <span class="limb foot right"></span>
+            </div>
+          </div>
+          <div class="shadow"></div>
+        </div>
+        <div class="pose-label">思考</div>
+      </div>
+
+      <div class="pose-card">
+        <div class="scene">
+          <div class="bubble-wrap pose-happy">
+            <div class="body">
+              <span class="limb hand left"></span>
+              <span class="limb hand right"></span>
+              <div class="orb">
+                <div class="face">
+                  <div class="eyes eyes-happy">
+                    <span class="eye eye-left">
+                      <span class="pupil"></span>
+                      <span class="cheer"></span>
+                    </span>
+                    <span class="eye eye-right">
+                      <span class="pupil"></span>
+                      <span class="cheer"></span>
+                    </span>
+                  </div>
+                  <div class="mouth wide"></div>
+                </div>
+              </div>
+              <span class="limb foot left"></span>
+              <span class="limb foot right"></span>
+            </div>
+          </div>
+          <div class="shadow"></div>
+        </div>
+        <div class="pose-label">开心</div>
+      </div>
+
+      <div class="pose-card">
+        <div class="scene">
+          <div class="bubble-wrap pose-point">
+            <div class="body">
+              <span class="limb hand left"></span>
+              <span class="limb hand right"></span>
+              <div class="orb">
+                <div class="face">
+                  <div class="eyes">
+                    <span class="eye eye-left">
+                      <span class="pupil"></span>
+                      <span class="cheer"></span>
+                    </span>
+                    <span class="eye eye-right">
+                      <span class="pupil"></span>
+                      <span class="cheer"></span>
+                    </span>
+                  </div>
+                  <div class="mouth"></div>
+                </div>
+              </div>
+              <span class="limb foot left"></span>
+              <span class="limb foot right"></span>
+            </div>
+          </div>
+          <div class="shadow"></div>
+        </div>
+        <div class="pose-label">指点</div>
+      </div>
+
+      <div class="pose-card">
+        <div class="scene">
+          <div class="bubble-wrap pose-rest">
+            <div class="body">
+              <span class="limb hand left"></span>
+              <span class="limb hand right"></span>
+              <div class="orb">
+                <div class="face">
+                  <div class="eyes">
+                    <span class="eye eye-left">
+                      <span class="pupil"></span>
+                      <span class="cheer"></span>
+                    </span>
+                    <span class="eye eye-right">
+                      <span class="pupil"></span>
+                      <span class="cheer"></span>
+                    </span>
+                  </div>
+                  <div class="mouth line"></div>
+                </div>
+              </div>
+              <span class="limb foot left"></span>
+              <span class="limb foot right"></span>
+            </div>
+          </div>
+          <div class="shadow"></div>
+        </div>
+        <div class="pose-label">休息</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
