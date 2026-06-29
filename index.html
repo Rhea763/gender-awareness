@@ -702,11 +702,11 @@
     };
 
     var LIKERT_ITEMS = [
-      "如果两个人做了同样的选择，却得到截然相反的褒贬，我会觉得不太合理。",
-      "把两种截然不同的反馈放在一起对比时，我更容易觉得评价标准其实并不一致。",
-      "当别人用「为你好」的语气告诉你应该怎样时，我有时会怀疑：这真的是唯一合适的选择吗？",
-      "一个人在一件事上受到格外严厉的批评，通常说明是他/她自己做得还不够好。",
-      "看到两种截然不同的评价并排出现时，我会感到别扭或不舒服。"
+      "同样的选择，换成男生或女生来做，别人给出的评价有时会不太一样。",
+      "大家评价别人时，有时会不自觉带着「男生/女生应该是什么样」的想法。",
+      "当有人说「这样更适合女生」或「这样更适合男生」时，我通常会先想一想，而不是马上接受。",
+      "同样的选择，男生做了和女生做了，挨的批评不一样——我通常还是会先想：是不是这个选择本身就不该那样做。",
+      "一件事如果被讲成适合男生、不适合女生（或反过来），我会想：大家到底在按什么标准判断。"
     ];
 
     var LIKERT_REVERSE_INDEX = 3;
@@ -779,14 +779,14 @@
 
     function equalitySliderHtml() {
       return '<div class="likert-block equality-slider-block">' +
-        '<p class="likert-q"><strong>你认为当前社会性别平等达到了什么程度？</strong></p>' +
+        '<p class="likert-q"><strong>如果用 0–100 打分：你觉得现在的生活环境里，男生和女生被期待的方式有多接近？</strong></p>' +
         '<p class="likert-legend" style="margin-bottom:0.65rem">拖动滑块选择 0–100 之间的数值</p>' +
         '<div class="equality-slider-wrap">' +
         '<input type="range" class="equality-slider" min="0" max="100" value="50" step="1" />' +
         '<div class="equality-slider-meta">' +
-        '<span>不平等 · 0</span>' +
+        '<span>差很多 · 0</span>' +
         '<span class="equality-slider-value">50</span>' +
-        '<span>平等 · 100</span>' +
+        '<span>很接近 · 100</span>' +
         "</div></div></div>";
     }
 
@@ -876,7 +876,7 @@
         '<p class="step-label">第 1 步 / 共 7 步 · 开始前</p>' +
         '<p class="screen-note">没有标准答案。请先凭<strong>体验之前</strong>的第一反应作答。</p>' +
         '<div class="likert-block">' +
-        "<p><strong>你是否学过性别研究相关课程？</strong></p>" +
+        "<p><strong>你是否接触过性别研究相关的课程、文章或讨论？</strong></p>" +
         '<div class="survey" id="genderStudyOptions">' +
         '<label><input type="radio" name="genderStudy" value="yes" /> 是</label>' +
         '<label><input type="radio" name="genderStudy" value="no" /> 否</label>' +
@@ -890,7 +890,7 @@
       bindEqualitySlider(screenEl, "pre_equality_score");
       document.getElementById("btnPreDone").onclick = function () {
         if (!state.genderStudy) {
-          alert("请先选择是否学过性别研究相关课程。");
+          alert("请先选择是否接触过相关内容。");
           return;
         }
         if (!validateLikert(state.preScores)) {
